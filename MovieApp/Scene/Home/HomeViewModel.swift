@@ -65,7 +65,7 @@ class HomeViewModel {
     }
     
     private func getUpcoming() {
-        manager.request(endpoint: .nowPlaying,
+        manager.request(endpoint: .upcoming,
                         model: Movie.self) { data, error in
             if let data {
                 self.movieItems.append(.init(title: "Upcoming",
@@ -75,5 +75,10 @@ class HomeViewModel {
                 self.errorHandler?(error)
             }
         }
+    }
+    
+    func filterMovies(title: String) -> [HomeModel] {
+        let data = self.movieItems.filter { $0.title == title }
+        return data
     }
 }

@@ -14,8 +14,8 @@ class MovieCell: UICollectionViewCell {
         let l = UILabel()
         l.textColor = .black
         l.font = .systemFont(ofSize: 16, weight: .regular)
-        l.numberOfLines = 2
-        l.textAlignment = .center
+        l.textAlignment = .left
+        l.numberOfLines = 0
         l.text = "Movie Name"
         l.translatesAutoresizingMaskIntoConstraints = false
         return l
@@ -49,16 +49,17 @@ class MovieCell: UICollectionViewCell {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             movieImage.topAnchor.constraint(equalTo: topAnchor),
-            movieImage.heightAnchor.constraint(equalToConstant: 240),
+            movieImage.heightAnchor.constraint(equalToConstant: 232),
             movieImage.widthAnchor.constraint(equalToConstant: 168),
             
-            movieTitle.topAnchor.constraint(equalTo: movieImage.bottomAnchor, constant: 8),
-            movieTitle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8)
+            movieTitle.topAnchor.constraint(equalTo: movieImage.bottomAnchor, constant: 4),
+            movieTitle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+            movieTitle.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
         ])
     }
     
     func configure(model: MovieResult) {
-        movieTitle.text = model.title
+        movieTitle.text = "\(model.title ?? "") (\(model.releaseDate?.prefix(4) ?? ""))"
         movieImage.sd_setImage(with: URL(string: "https://image.tmdb.org/t/p/original\(model.posterPath ?? "")")) { image, error, _, _ in
             if let image {
                 self.movieImage.image = image

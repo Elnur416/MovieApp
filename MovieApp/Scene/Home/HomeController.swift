@@ -60,6 +60,15 @@ extension HomeController: UICollectionViewDataSource, UICollectionViewDelegate, 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(HomeCell.self)", for: indexPath) as! HomeCell
         let model = viewModel.movieItems[indexPath.row]
         cell.configureTitles(text: model.title, data: model.items)
+        cell.titleCallBack = { title in
+            let vc = SeeAllController()
+            vc.viewModel.selectedTitle = title
+            print(self.viewModel.movieItems[indexPath.row].title)
+            if let data = self.viewModel.filterMovies(title: title).first {
+                vc.configureData(data: data.items)
+            }
+            self.navigationController?.show(vc, sender: nil)
+        }
         return cell
     }
     

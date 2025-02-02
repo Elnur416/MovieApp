@@ -10,6 +10,7 @@ import UIKit
 class HomeCell: UICollectionViewCell {
     
     private var data = [MovieResult]()
+    var titleCallBack: ((String) -> Void)?
     
     private lazy var title: UILabel = {
         let l = UILabel()
@@ -25,6 +26,7 @@ class HomeCell: UICollectionViewCell {
         b.setTitle("See all", for: .normal)
         b.setTitleColor(UIColor(named: "mainColour"), for: .normal)
         b.titleLabel?.font = .systemFont(ofSize: 16)
+        b.addTarget(self, action: #selector(seeAllAction), for: .touchUpInside)
         b.translatesAutoresizingMaskIntoConstraints = false
         return b
     }()
@@ -73,6 +75,10 @@ class HomeCell: UICollectionViewCell {
             collection.trailingAnchor.constraint(equalTo: trailingAnchor),
             collection.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
+    }
+    
+    @objc private func seeAllAction() {
+        titleCallBack?(title.text ?? "")
     }
     
     func configureTitles(text: String, data: [MovieResult]) {
