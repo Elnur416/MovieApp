@@ -8,21 +8,9 @@
 import Foundation
 import Alamofire
 
-enum Endpoint: String {
-    case postItems = "/posts"
-    case comments = "/comments"
-    case albums = "/albums"
-    case users = "/users"
-}
-
-enum EncodingType {
-    case url
-    case json
-}
-
 class NetworkManager {
-    let baseURL = AppFile.baseURL
-    let header: HTTPHeaders = [
+    private let baseURL = AppFile.baseURL
+    private let header: HTTPHeaders = [
         "accept": "application/json",
           "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlMjI1MzQxNmZhYzBjZDI0NzYyOTFlYjMzYzkyYmViNyIsIm5iZiI6MTY0ODYyMDAzNC4xNTgwMDAyLCJzdWIiOiI2MjQzZjIwMmM1MGFkMjAwNWNkZTk1ZjAiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.xs9Bib0qWPDMeB9YXyPkYa4CzmQ5W4-N6rgdaLRPlZc"
     ]

@@ -9,6 +9,8 @@ import UIKit
 
 class HomeController: UIViewController {
     
+    private let viewModel = HomeViewModel()
+    
     private lazy var collection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -27,6 +29,7 @@ class HomeController: UIViewController {
         super.viewDidLoad()
 
         setupUI()
+        configureViewModel()
     }
     
     private func setupUI() {
@@ -35,15 +38,28 @@ class HomeController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "Movies"
     }
+    
+    private func configureViewModel() {
+        viewModel.getAllData()
+        viewModel.completion = {
+            self.collection.reloadData()
+        }
+        viewModel.errorHandler = { error in
+            let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        }
+    }
 }
 
 extension HomeController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        4
+        viewModel.movieItems.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(HomeCell.self)", for: indexPath) as! HomeCell
+        let model = viewModel.movieItems[indexPath.row]
+        cell.configureTitles(text: model.title, data: model.items)
         return cell
     }
     

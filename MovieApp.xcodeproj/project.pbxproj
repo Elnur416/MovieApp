@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		64B91BDD2D4EA10800AF91BB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 64B91BDC2D4EA10800AF91BB /* Alamofire */; };
+		64E658DD2D4F6AD000F3396E /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 64E658DC2D4F6AD000F3396E /* SDWebImage */; };
+		64E658DF2D4F6AD000F3396E /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 64E658DE2D4F6AD000F3396E /* SDWebImageMapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +71,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64E658DD2D4F6AD000F3396E /* SDWebImage in Frameworks */,
+				64E658DF2D4F6AD000F3396E /* SDWebImageMapKit in Frameworks */,
 				64B91BDD2D4EA10800AF91BB /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -131,6 +135,8 @@
 			name = MovieApp;
 			packageProductDependencies = (
 				64B91BDC2D4EA10800AF91BB /* Alamofire */,
+				64E658DC2D4F6AD000F3396E /* SDWebImage */,
+				64E658DE2D4F6AD000F3396E /* SDWebImageMapKit */,
 			);
 			productName = MovieApp;
 			productReference = 64B91B482D4E8AF400AF91BB /* MovieApp.app */;
@@ -216,6 +222,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				64B91BDB2D4EA10800AF91BB /* XCRemoteSwiftPackageReference "Alamofire" */,
+				64E658DB2D4F6AD000F3396E /* XCRemoteSwiftPackageReference "SDWebImage" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 64B91B492D4E8AF400AF91BB /* Products */;
@@ -582,6 +589,14 @@
 				minimumVersion = 5.10.2;
 			};
 		};
+		64E658DB2D4F6AD000F3396E /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.20.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -589,6 +604,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 64B91BDB2D4EA10800AF91BB /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		64E658DC2D4F6AD000F3396E /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 64E658DB2D4F6AD000F3396E /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+		64E658DE2D4F6AD000F3396E /* SDWebImageMapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 64E658DB2D4F6AD000F3396E /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImageMapKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

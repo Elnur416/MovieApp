@@ -6,13 +6,35 @@
 //
 
 import UIKit
+import SDWebImage
 
 class MovieCell: UICollectionViewCell {
+    
+    private lazy var movieTitle: UILabel = {
+        let l = UILabel()
+        l.textColor = .black
+        l.font = .systemFont(ofSize: 16, weight: .regular)
+        l.numberOfLines = 2
+        l.textAlignment = .center
+        l.text = "Movie Name"
+        l.translatesAutoresizingMaskIntoConstraints = false
+        return l
+    }()
+    
+    private lazy var movieImage: UIImageView = {
+        let i = UIImageView()
+        i.layer.cornerRadius = 16
+        i.clipsToBounds = true
+        i.backgroundColor = .systemGray
+        i.translatesAutoresizingMaskIntoConstraints = false
+        return i
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setupUI()
+        setupConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -20,6 +42,29 @@ class MovieCell: UICollectionViewCell {
     }
     
     private func setupUI() {
-        backgroundColor = .red
+        [movieTitle,
+         movieImage].forEach { addSubview($0) }
+    }
+    
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            movieImage.topAnchor.constraint(equalTo: topAnchor),
+            movieImage.heightAnchor.constraint(equalToConstant: 240),
+            movieImage.widthAnchor.constraint(equalToConstant: 168),
+            
+            movieTitle.topAnchor.constraint(equalTo: movieImage.bottomAnchor, constant: 8),
+            movieTitle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8)
+        ])
+    }
+    
+    func configure(model: MovieResult) {
+        movieTitle.text = model.title
+        movieImage.sd_setImage(with: URL(string: "https://image.tmdb.org/t/p/original\(model.posterPath ?? "")")) { image, error, _, _ in
+            if let image {
+                self.movieImage.image = image
+            } else if let error {
+                print(error)
+            }
+        }
     }
 }

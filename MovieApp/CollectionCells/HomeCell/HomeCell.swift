@@ -9,11 +9,12 @@ import UIKit
 
 class HomeCell: UICollectionViewCell {
     
+    private var data = [MovieResult]()
+    
     private lazy var title: UILabel = {
         let l = UILabel()
         l.font = .systemFont(ofSize: 20, weight: .bold)
         l.textAlignment = .center
-        l.text = "Popular"
         l.numberOfLines = 0
         l.translatesAutoresizingMaskIntoConstraints = false
         return l
@@ -36,7 +37,7 @@ class HomeCell: UICollectionViewCell {
         let c = UICollectionView(frame: .zero, collectionViewLayout: layout)
         c.dataSource = self
         c.delegate = self
-        c.showsVerticalScrollIndicator = false
+        c.showsHorizontalScrollIndicator = false
         c.register(MovieCell.self, forCellWithReuseIdentifier: "\(MovieCell.self)")
         c.translatesAutoresizingMaskIntoConstraints = false
         return c
@@ -73,15 +74,21 @@ class HomeCell: UICollectionViewCell {
             collection.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
+    
+    func configureTitles(text: String, data: [MovieResult]) {
+        title.text = text
+        self.data = data
+    }
 }
 
 extension HomeCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        10
+        data.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(MovieCell.self)", for: indexPath) as! MovieCell
+        cell.configure(model: data[indexPath.row])
         return cell
     }
     
