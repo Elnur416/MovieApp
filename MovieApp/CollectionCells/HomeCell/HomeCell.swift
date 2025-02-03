@@ -13,6 +13,8 @@ class HomeCell: UICollectionViewCell {
     var titleCallBack: ((String) -> Void)?
     var indexCallBack: ((Int, String) -> Void)?
     
+//    MARK: Setup UI elements
+    
     private lazy var title: UILabel = {
         let l = UILabel()
         l.font = .systemFont(ofSize: 20, weight: .bold)
@@ -45,6 +47,8 @@ class HomeCell: UICollectionViewCell {
         c.translatesAutoresizingMaskIntoConstraints = false
         return c
     }()
+    
+//    MARK: - Life cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -87,6 +91,8 @@ class HomeCell: UICollectionViewCell {
         self.data = data
     }
 }
+
+//MARK: - Setup collection
 
 extension HomeCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

@@ -11,6 +11,8 @@ class SeeAllController: UIViewController {
     
     let viewModel = SeeAllViewModel()
     
+//    MARK: Setup UI elements
+    
     private lazy var collection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -25,6 +27,8 @@ class SeeAllController: UIViewController {
         return c
     }()
 
+//    MARK: - Life cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -42,6 +46,8 @@ class SeeAllController: UIViewController {
         self.viewModel.selectedMovies = data
     }
 }
+
+//MARK: - Setup collection
 
 extension SeeAllController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

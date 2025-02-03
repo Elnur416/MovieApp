@@ -11,6 +11,8 @@ class HomeController: UIViewController {
     
     private let viewModel = HomeViewModel()
     
+//    MARK: setup UI elements
+    
     private lazy var collection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -25,6 +27,8 @@ class HomeController: UIViewController {
         return c
     }()
 
+//    MARK: - Life cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -50,6 +54,8 @@ class HomeController: UIViewController {
         }
     }
 }
+
+//MARK: - Setup collection
 
 extension HomeController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

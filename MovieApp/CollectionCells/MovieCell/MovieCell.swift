@@ -10,6 +10,8 @@ import SDWebImage
 
 class MovieCell: UICollectionViewCell {
     
+//    MARK: Setup UI elements
+    
     private lazy var movieTitle: UILabel = {
         let l = UILabel()
         l.textColor = .black
@@ -29,6 +31,8 @@ class MovieCell: UICollectionViewCell {
         i.translatesAutoresizingMaskIntoConstraints = false
         return i
     }()
+    
+//    MARK: - Life cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
