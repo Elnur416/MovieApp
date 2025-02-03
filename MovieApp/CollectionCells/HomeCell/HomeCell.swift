@@ -11,6 +11,7 @@ class HomeCell: UICollectionViewCell {
     
     private var data = [MovieResult]()
     var titleCallBack: ((String) -> Void)?
+    var indexCallBack: ((Int, String) -> Void)?
     
     private lazy var title: UILabel = {
         let l = UILabel()
@@ -81,7 +82,7 @@ class HomeCell: UICollectionViewCell {
         titleCallBack?(title.text ?? "")
     }
     
-    func configureTitles(text: String, data: [MovieResult]) {
+    func configure(text: String, data: [MovieResult]) {
         title.text = text
         self.data = data
     }
@@ -100,5 +101,9 @@ extension HomeCell: UICollectionViewDataSource, UICollectionViewDelegate, UIColl
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         .init(width: 168, height: collectionView.frame.height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        indexCallBack?(indexPath.row, title.text ?? "")
     }
 }

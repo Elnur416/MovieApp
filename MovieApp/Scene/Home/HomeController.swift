@@ -59,15 +59,22 @@ extension HomeController: UICollectionViewDataSource, UICollectionViewDelegate, 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(HomeCell.self)", for: indexPath) as! HomeCell
         let model = viewModel.movieItems[indexPath.row]
-        cell.configureTitles(text: model.title, data: model.items)
+        cell.configure(text: model.title, data: model.items)
         cell.titleCallBack = { title in
             let vc = SeeAllController()
             vc.viewModel.selectedTitle = title
-            print(self.viewModel.movieItems[indexPath.row].title)
             if let data = self.viewModel.filterMovies(title: title).first {
                 vc.configureData(data: data.items)
+                self.navigationController?.show(vc, sender: nil)
             }
-            self.navigationController?.show(vc, sender: nil)
+        }
+        cell.indexCallBack = { index, title in
+            let model = self.viewModel.filterMovies(title: title).first
+            if let data = model?.items[index] {
+                let vc = MovieDetailController()
+                vc.configureData(data: data)
+                self.navigationController?.show(vc, sender: nil)
+            }
         }
         return cell
     }
