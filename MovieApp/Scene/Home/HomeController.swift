@@ -66,21 +66,16 @@ extension HomeController: UICollectionViewDataSource, UICollectionViewDelegate, 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(HomeCell.self)", for: indexPath) as! HomeCell
         let model = viewModel.movieItems[indexPath.row]
         cell.configure(text: model.title, data: model.items)
-        cell.titleCallBack = { title in
+        cell.seeAllCallback = {
             let vc = SeeAllController()
-            vc.viewModel.selectedTitle = title
-            if let data = self.viewModel.filterMovies(title: title).first {
-                vc.configureData(data: data.items)
-                self.navigationController?.show(vc, sender: nil)
-            }
+            vc.viewModel.selectedMovies = self.viewModel.movieItems[indexPath.row].items
+            vc.viewModel.selectedTitle = self.viewModel.movieItems[indexPath.row].title
+            self.navigationController?.show(vc, sender: nil)
         }
-        cell.indexCallBack = { index, title in
-            let model = self.viewModel.filterMovies(title: title).first
-            if let data = model?.items[index] {
-                let vc = MovieDetailController()
-                vc.configureData(data: data)
-                self.navigationController?.show(vc, sender: nil)
-            }
+        cell.movieCallback = { id in
+            let vc = MovieDetailController()
+            vc.viewModel.data = self.viewModel.movieItems[indexPath.row].items.first(where: { $0.id == id })!
+            self.navigationController?.show(vc, sender: nil)
         }
         return cell
     }

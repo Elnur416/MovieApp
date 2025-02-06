@@ -8,7 +8,7 @@
 import UIKit
 import SDWebImage
 
-class MovieCell: UICollectionViewCell {
+class ImageLabelCell: UICollectionViewCell {
     
 //    MARK: Setup UI elements
     
@@ -62,14 +62,8 @@ class MovieCell: UICollectionViewCell {
         ])
     }
     
-    func configure(model: MovieResult) {
-        movieTitle.text = "\(model.title ?? "") (\(model.releaseDate?.prefix(4) ?? ""))"
-        movieImage.sd_setImage(with: URL(string: "https://image.tmdb.org/t/p/original\(model.posterPath ?? "")")) { image, error, _, _ in
-            if let image {
-                self.movieImage.image = image
-            } else if let error {
-                print(error)
-            }
-        }
+    func configure(data: MovieCellProtocol) {
+        movieTitle.text = data.titleText
+        movieImage.loadImage(url: data.imageURL)
     }
 }

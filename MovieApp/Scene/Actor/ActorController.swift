@@ -1,23 +1,21 @@
 //
-//  SeeAllController.swift
+//  ActorController.swift
 //  MovieApp
 //
-//  Created by Elnur Mammadov on 02.02.25.
+//  Created by Elnur Mammadov on 06.02.25.
 //
 
 import UIKit
 
-class SeeAllController: UIViewController {
+class ActorController: UIViewController {
     
-    let viewModel = SeeAllViewModel()
-    
-//    MARK: Setup UI elements
+    private let viewModel = ActorViewModel()
     
     private lazy var collection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 40
-        layout.sectionInset = .init(top: 24, left: 20, bottom: 40, right: 20)
+        layout.minimumLineSpacing = 70
+        layout.sectionInset = .init(top: 16, left: 24, bottom: 40, right: 16)
         let c = UICollectionView(frame: .zero, collectionViewLayout: layout)
         c.dataSource = self
         c.delegate = self
@@ -27,43 +25,46 @@ class SeeAllController: UIViewController {
         return c
     }()
 
-//    MARK: - Life cycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupUI()
+        configureViewModel()
     }
     
     private func setupUI() {
         view.backgroundColor = .white
         view.addSubview(collection)
         collection.frame = view.bounds
-        title = viewModel.selectedTitle
+        navigationController?.navigationBar.prefersLargeTitles = true
+        title = "Actors"
+    }
+    
+    private func configureViewModel() {
+        viewModel.fetchActors()
+        viewModel.completion = {
+            self.collection.reloadData()
+        }
+        viewModel.errorHandler = { error in
+            let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            self.present(alert, animated: true)
+        }
     }
 }
 
-//MARK: - Setup collection
-
-extension SeeAllController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension ActorController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.selectedMovies.count
+        viewModel.actors.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(ImageLabelCell.self)", for: indexPath) as! ImageLabelCell
-        let model = viewModel.selectedMovies[indexPath.row]
-        cell.configure(data: model)
+        cell.configure(data: viewModel.actors[indexPath.row])
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        .init(width: 168, height: 240)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = MovieDetailController()
-        vc.viewModel.data = viewModel.selectedMovies[indexPath.row]
-        navigationController?.show(vc, sender: nil)
+        .init(width: 168, height: 220)
     }
 }

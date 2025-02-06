@@ -27,7 +27,7 @@ struct Dates: Codable {
 }
 
 // MARK: - Result
-struct MovieResult: Codable {
+struct MovieResult: Codable, MovieCellProtocol {
     let adult: Bool?
     let backdropPath: String?
     let genreIDS: [Int]?
@@ -39,6 +39,14 @@ struct MovieResult: Codable {
     let video: Bool?
     let voteAverage: Double?
     let voteCount: Int?
+    
+    var titleText: String {
+        "\(title ?? "") (\(releaseDate?.prefix(4) ?? ""))"
+    }
+    
+    var imageURL: String {
+        posterPath ?? ""
+    }
 
     enum CodingKeys: String, CodingKey {
         case adult

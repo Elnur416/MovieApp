@@ -10,12 +10,12 @@ import UIKit
 class HomeCell: UICollectionViewCell {
     
     private var data = [MovieResult]()
-    var titleCallBack: ((String) -> Void)?
-    var indexCallBack: ((Int, String) -> Void)?
+    var seeAllCallback: (() -> Void)?
+    var movieCallback: ((Int) -> Void)?
     
 //    MARK: Setup UI elements
     
-    private lazy var title: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let l = UILabel()
         l.font = .systemFont(ofSize: 20, weight: .bold)
         l.textAlignment = .center
@@ -43,7 +43,7 @@ class HomeCell: UICollectionViewCell {
         c.dataSource = self
         c.delegate = self
         c.showsHorizontalScrollIndicator = false
-        c.register(MovieCell.self, forCellWithReuseIdentifier: "\(MovieCell.self)")
+        c.register(ImageLabelCell.self, forCellWithReuseIdentifier: "\(ImageLabelCell.self)")
         c.translatesAutoresizingMaskIntoConstraints = false
         return c
     }()
@@ -62,20 +62,20 @@ class HomeCell: UICollectionViewCell {
     }
     
     private func setupUI() {
-        [title,
+        [titleLabel,
          seeAllButton,
          collection].forEach(addSubview)
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            title.topAnchor.constraint(equalTo: topAnchor),
-            title.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 32),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 32),
             
-            seeAllButton.centerYAnchor.constraint(equalTo: title.centerYAnchor),
+            seeAllButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             seeAllButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             
-            collection.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 16),
+            collection.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
             collection.leadingAnchor.constraint(equalTo: leadingAnchor),
             collection.trailingAnchor.constraint(equalTo: trailingAnchor),
             collection.bottomAnchor.constraint(equalTo: bottomAnchor)
@@ -83,11 +83,11 @@ class HomeCell: UICollectionViewCell {
     }
     
     @objc private func seeAllAction() {
-        titleCallBack?(title.text ?? "")
+        seeAllCallback?()
     }
     
     func configure(text: String, data: [MovieResult]) {
-        title.text = text
+        titleLabel.text = text
         self.data = data
     }
 }
@@ -100,8 +100,8 @@ extension HomeCell: UICollectionViewDataSource, UICollectionViewDelegate, UIColl
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(MovieCell.self)", for: indexPath) as! MovieCell
-        cell.configure(model: data[indexPath.row])
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(ImageLabelCell.self)", for: indexPath) as! ImageLabelCell
+        cell.configure(data: data[indexPath.row])
         return cell
     }
     
@@ -110,6 +110,6 @@ extension HomeCell: UICollectionViewDataSource, UICollectionViewDelegate, UIColl
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        indexCallBack?(indexPath.row, title.text ?? "")
+        movieCallback?(data[indexPath.row].id ?? 0)
     }
 }

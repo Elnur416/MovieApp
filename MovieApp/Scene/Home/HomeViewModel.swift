@@ -26,7 +26,8 @@ class HomeViewModel {
     }
     
     private func getNowPlaying() {
-        manager.request(endpoint: .nowPlaying,
+        let path = MovieEndpoint.nowPlaying.path
+        manager.request(path: path,
                         model: Movie.self) { data, error in
             if let data {
                 self.movieItems.append(.init(title: "Now Playing",
@@ -39,7 +40,8 @@ class HomeViewModel {
     }
     
     private func getPopular() {
-        manager.request(endpoint: .popular,
+        let path = MovieEndpoint.popular.path
+        manager.request(path: path,
                         model: Movie.self) { data, error in
             if let data {
                 self.movieItems.append(.init(title: "Popular",
@@ -52,7 +54,8 @@ class HomeViewModel {
     }
     
     private func getTopRated() {
-        manager.request(endpoint: .topRated,
+        let path = MovieEndpoint.topRated.path
+        manager.request(path: path,
                         model: Movie.self) { data, error in
             if let data {
                 self.movieItems.append(.init(title: "Top Rated",
@@ -65,7 +68,8 @@ class HomeViewModel {
     }
     
     private func getUpcoming() {
-        manager.request(endpoint: .upcoming,
+        let path = MovieEndpoint.upcoming.path
+        manager.request(path: path,
                         model: Movie.self) { data, error in
             if let data {
                 self.movieItems.append(.init(title: "Upcoming",
@@ -75,10 +79,5 @@ class HomeViewModel {
                 self.errorHandler?(error)
             }
         }
-    }
-    
-    func filterMovies(title: String) -> [HomeModel] {
-        let data = self.movieItems.filter { $0.title == title }
-        return data
     }
 }

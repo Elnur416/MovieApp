@@ -205,8 +205,4 @@ class MovieDetailController: UIViewController {
         movieVote.text = formattedValue
         overview.text = viewModel.data?.overview
     }
-    
-    func configureData(data: MovieResult) {
-        self.viewModel.data = data
-    }
 }
