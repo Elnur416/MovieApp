@@ -16,7 +16,7 @@ class SeeAllController: UIViewController {
     private lazy var collection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 40
+        layout.minimumLineSpacing = 80
         layout.sectionInset = .init(top: 24, left: 20, bottom: 40, right: 20)
         let c = UICollectionView(frame: .zero, collectionViewLayout: layout)
         c.dataSource = self

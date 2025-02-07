@@ -19,60 +19,18 @@ class HomeViewModel {
     var errorHandler: ((String) -> Void)?
     
     func getAllData() {
-        getNowPlaying()
-        getPopular()
-        getTopRated()
-        getUpcoming()
+        fetchData(title: "Now Playing", endpoint: .nowPlaying)
+        fetchData(title: "Popular", endpoint: .popular)
+        fetchData(title: "Top Rated", endpoint: .topRated)
+        fetchData(title: "Upcoming", endpoint: .upcoming)
     }
     
-    private func getNowPlaying() {
-        let path = MovieEndpoint.nowPlaying.path
+    private func fetchData(title: String, endpoint: MovieEndpoint) {
+        let path = endpoint.path
         manager.request(path: path,
                         model: Movie.self) { data, error in
             if let data {
-                self.movieItems.append(.init(title: "Now Playing",
-                                             items: data.results ?? []))
-                self.completion?()
-            } else if let error {
-                self.errorHandler?(error)
-            }
-        }
-    }
-    
-    private func getPopular() {
-        let path = MovieEndpoint.popular.path
-        manager.request(path: path,
-                        model: Movie.self) { data, error in
-            if let data {
-                self.movieItems.append(.init(title: "Popular",
-                                             items: data.results ?? []))
-                self.completion?()
-            } else if let error {
-                self.errorHandler?(error)
-            }
-        }
-    }
-    
-    private func getTopRated() {
-        let path = MovieEndpoint.topRated.path
-        manager.request(path: path,
-                        model: Movie.self) { data, error in
-            if let data {
-                self.movieItems.append(.init(title: "Top Rated",
-                                             items: data.results ?? []))
-                self.completion?()
-            } else if let error {
-                self.errorHandler?(error)
-            }
-        }
-    }
-    
-    private func getUpcoming() {
-        let path = MovieEndpoint.upcoming.path
-        manager.request(path: path,
-                        model: Movie.self) { data, error in
-            if let data {
-                self.movieItems.append(.init(title: "Upcoming",
+                self.movieItems.append(.init(title: title,
                                              items: data.results ?? []))
                 self.completion?()
             } else if let error {

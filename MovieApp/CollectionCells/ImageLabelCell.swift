@@ -53,7 +53,7 @@ class ImageLabelCell: UICollectionViewCell {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             movieImage.topAnchor.constraint(equalTo: topAnchor),
-            movieImage.heightAnchor.constraint(equalToConstant: 232),
+            movieImage.heightAnchor.constraint(equalToConstant: 240),
             movieImage.widthAnchor.constraint(equalToConstant: 168),
             
             movieTitle.topAnchor.constraint(equalTo: movieImage.bottomAnchor, constant: 4),
