@@ -15,7 +15,7 @@ class ActorController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = 70
-        layout.sectionInset = .init(top: 16, left: 24, bottom: 40, right: 16)
+        layout.sectionInset = .init(top: 16, left: 24, bottom: 44, right: 16)
         let c = UICollectionView(frame: .zero, collectionViewLayout: layout)
         c.dataSource = self
         c.delegate = self

@@ -14,6 +14,6 @@ enum MovieEndpoint: String {
     case upcoming = "movie/upcoming"
     
     var path: String {
-        NetworkHelper.shared.configureURL(enpoint: self.rawValue)
+        NetworkHelper.shared.configureURL(endpoint: self.rawValue)
     }
 }

@@ -14,7 +14,7 @@ struct HomeModel {
 
 class HomeViewModel {
     var movieItems = [HomeModel]()
-    private let manager = NetworkManager()
+    private let manager = MovieManager()
     var completion: (() -> Void)?
     var errorHandler: ((String) -> Void)?
     
@@ -26,9 +26,7 @@ class HomeViewModel {
     }
     
     private func fetchData(title: String, endpoint: MovieEndpoint) {
-        let path = endpoint.path
-        manager.request(path: path,
-                        model: Movie.self) { data, error in
+        manager.getMovieList(endpoint: endpoint) { data, error in
             if let data {
                 self.movieItems.append(.init(title: title,
                                              items: data.results ?? []))

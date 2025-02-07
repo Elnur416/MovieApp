@@ -8,15 +8,13 @@
 import Foundation
 
 class ActorViewModel {
-    var actors = [ActorData]()
-    private let manager = NetworkManager()
+    var actors = [ActorResult]()
+    private let manager = ActorManager()
     var completion: (() -> Void)?
     var errorHandler: ((String) -> Void)?
     
     func fetchActors() {
-        let path = ActorEndpoint.actor.path
-        manager.request(path: path,
-                        model: Actor.self) { data, error in
+        manager.getActorList { data, error in
             if let data {
                 self.actors = data.results ?? []
                 self.completion?()

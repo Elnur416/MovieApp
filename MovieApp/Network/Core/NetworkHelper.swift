@@ -23,7 +23,7 @@ class NetworkHelper {
           "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlMjI1MzQxNmZhYzBjZDI0NzYyOTFlYjMzYzkyYmViNyIsIm5iZiI6MTY0ODYyMDAzNC4xNTgwMDAyLCJzdWIiOiI2MjQzZjIwMmM1MGFkMjAwNWNkZTk1ZjAiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.xs9Bib0qWPDMeB9YXyPkYa4CzmQ5W4-N6rgdaLRPlZc"
     ]
     
-    func configureURL(enpoint: String) -> String {
-        return baseURL + "/" + enpoint
+    func configureURL(endpoint: String) -> String {
+        return baseURL + "/" + endpoint
     }
 }

@@ -10,7 +10,7 @@ import Foundation
 // MARK: - Actor
 struct Actor: Codable {
     let page: Int?
-    let results: [ActorData]?
+    let results: [ActorResult]?
     let totalPages, totalResults: Int?
 
     enum CodingKeys: String, CodingKey {
@@ -20,8 +20,8 @@ struct Actor: Codable {
     }
 }
 
-// MARK: - Result
-struct ActorData: Codable, MovieCellProtocol {
+// MARK: - ActorResult
+struct ActorResult: Codable, MovieCellProtocol {
     let adult: Bool?
     let gender, id: Int?
     let knownForDepartment: String?
