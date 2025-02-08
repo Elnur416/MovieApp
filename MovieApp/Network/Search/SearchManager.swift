@@ -13,6 +13,7 @@ class SearchManager: SearchUseCase {
     func getSearchResults(query: String, completion: @escaping ((Movie?, String?) -> Void)) {
         let path = SearchEndpoint.search(movie: query).path
         manager.request(path: path,
-                        model: Movie.self, completion: completion)
+                        model: Movie.self,
+                        completion: completion)
     }
 }

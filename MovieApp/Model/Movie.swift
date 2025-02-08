@@ -40,6 +40,10 @@ struct MovieResult: Codable, MovieCellProtocol {
     let voteAverage: Double?
     let voteCount: Int?
     
+    var formattedDate: String {
+        "\(releaseDate?.prefix(4) ?? "")"
+    }
+    
     var titleText: String {
         "\(title ?? "") (\(releaseDate?.prefix(4) ?? ""))"
     }

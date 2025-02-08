@@ -13,7 +13,7 @@ class SearchController: UIViewController {
     
     private lazy var searchView: UIView = {
         let view = UIView()
-        view.backgroundColor = .cyan
+        view.backgroundColor = UIColor(named: "starColour")
         view.layer.cornerRadius = 27
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -36,9 +36,9 @@ class SearchController: UIViewController {
         rightView.addSubview(rightIcon)
         txt.rightViewMode = .always
         txt.rightView = rightView
-        txt.backgroundColor = .systemGray6
-        txt.layer.borderColor = UIColor.systemBlue.cgColor
-        txt.layer.borderWidth = 1
+        txt.returnKeyType = .search
+        txt.layer.borderColor = UIColor.orange.cgColor
+        txt.layer.borderWidth = 1.5
         txt.addTarget(self, action: #selector(searchTextDidChange), for: .editingChanged)
         txt.translatesAutoresizingMaskIntoConstraints = false
         return txt
@@ -58,10 +58,13 @@ class SearchController: UIViewController {
 
         setupUI()
         setupConstraints()
+        configureViewModel()
     }
     
     private func setupUI() {
         view.backgroundColor = .white
+        navigationController?.navigationBar.prefersLargeTitles = true
+        title = "Search"
         [searchView,
          table].forEach { view.addSubview($0) }
         searchView.addSubview(searchField)
@@ -88,6 +91,7 @@ class SearchController: UIViewController {
     }
     
     private func configureViewModel() {
+        viewModel.getGenres()
         viewModel.success = {
             self.table.reloadData()
         }
@@ -99,7 +103,7 @@ class SearchController: UIViewController {
     @objc private func searchTextDidChange() {
         guard let text = searchField.text else { return }
         viewModel.fetchMovies(query: text)
-        print(viewModel.searchedMovies.first?.title ?? "")
+        table.reloadData()
     }
 }
 
@@ -110,6 +114,7 @@ extension SearchController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "\(TableCell.self)", for: indexPath) as! TableCell
+        cell.configure(model: viewModel.searchedMovies[indexPath.row])
         return cell
     }
     
