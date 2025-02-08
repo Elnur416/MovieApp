@@ -24,6 +24,6 @@ class NetworkHelper {
     ]
     
     func configureURL(endpoint: String) -> String {
-        return baseURL + "/" + endpoint
+        return baseURL + endpoint
     }
 }

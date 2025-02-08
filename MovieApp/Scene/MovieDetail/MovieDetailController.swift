@@ -124,6 +124,7 @@ class MovieDetailController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .white
+        navigationController?.navigationBar.prefersLargeTitles = false
         [backImage,
          posterImage,
          titleLabel,
