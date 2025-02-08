@@ -163,6 +163,6 @@ extension TableCell: UICollectionViewDataSource, UICollectionViewDelegate, UICol
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        .init(width: 70, height: 30)
+        .init(width: collectionView.frame.width/4-10, height: 30)
     }
 }
