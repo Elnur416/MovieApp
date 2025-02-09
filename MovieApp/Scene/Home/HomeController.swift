@@ -74,7 +74,7 @@ extension HomeController: UICollectionViewDataSource, UICollectionViewDelegate, 
         }
         cell.movieCallback = { id in
             let vc = MovieDetailController()
-            vc.viewModel.data = self.viewModel.movieItems[indexPath.row].items.first(where: { $0.id == id })!
+            vc.viewModel.movieId = id
             self.navigationController?.show(vc, sender: nil)
         }
         return cell

@@ -121,4 +121,10 @@ extension SearchController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         UITableView.automaticDimension
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = MovieDetailController()
+        vc.viewModel.movieId = viewModel.searchedMovies[indexPath.row].id
+        navigationController?.show(vc, sender: nil)
+    }
 }

@@ -8,6 +8,33 @@
 import Foundation
 
 class MovieDetailViewModel {
-    var data: MovieResult?
+    var data: MovieDetail?
+    var similarData = [MovieResult]()
+    var movieId: Int?
+    private let detailManager = MovieDetailManager()
+    private let similarManager = SimilarManager()
+    var success: (() -> Void)?
+    var errorHandler: ((String) -> Void)?
     
+    func getMovieDetail() {
+        detailManager.getMovieDetail(id: self.movieId ?? 0) { data, error in
+            if let data {
+                self.data = data
+                self.success?()
+            } else if let error {
+                self.errorHandler?(error)
+            }
+        }
+    }
+    
+    func getSimilarMovies() {
+        similarManager.getSimilarMovies(movieId: self.movieId ?? 0) { data, error in
+            if let data {
+                self.similarData = data.results ?? []
+                self.success?()
+            } else if let error {
+                self.errorHandler?(error)
+            }
+        }
+    }
 }

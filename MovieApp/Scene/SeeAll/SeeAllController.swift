@@ -63,7 +63,7 @@ extension SeeAllController: UICollectionViewDataSource, UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = MovieDetailController()
-        vc.viewModel.data = viewModel.selectedMovies[indexPath.row]
+        vc.viewModel.movieId = viewModel.selectedMovies[indexPath.row].id
         navigationController?.show(vc, sender: nil)
     }
 }
