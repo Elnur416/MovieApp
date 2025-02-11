@@ -9,7 +9,7 @@ import Foundation
 
 class MovieDetailViewModel {
     var data: MovieDetail?
-    var similarData = [MovieResult]()
+    var similarMovies = [MovieResult]()
     var movieId: Int?
     private let detailManager = MovieDetailManager()
     private let similarManager = SimilarManager()
@@ -30,7 +30,7 @@ class MovieDetailViewModel {
     func getSimilarMovies() {
         similarManager.getSimilarMovies(movieId: self.movieId ?? 0) { data, error in
             if let data {
-                self.similarData = data.results ?? []
+                self.similarMovies = data.results ?? []
                 self.success?()
             } else if let error {
                 self.errorHandler?(error)

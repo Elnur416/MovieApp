@@ -1,17 +1,15 @@
 //
-//  MovieDetailController.swift
+//  ActorDetailController.swift
 //  MovieApp
 //
-//  Created by Elnur Mammadov on 03.02.25.
+//  Created by Elnur Mammadov on 10.02.25.
 //
 
 import UIKit
 
-class MovieDetailController: UIViewController {
+class ActorDetailController: UIViewController {
     
-    let viewModel = MovieDetailViewModel()
-    
-//    MARK: Setup UI elements
+    let viewModel = ActorDetailViewModel()
     
     private lazy var collection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -22,13 +20,11 @@ class MovieDetailController: UIViewController {
         c.delegate = self
         c.showsVerticalScrollIndicator = false
         c.register(ImageLabelCell.self, forCellWithReuseIdentifier: "\(ImageLabelCell.self)")
-        c.register(MovieHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "\(MovieHeaderView.self)")
+        c.register(ActorHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "\(ActorHeaderView.self)")
         c.translatesAutoresizingMaskIntoConstraints = false
         return c
     }()
-    
-//    MARK: - Life cycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -38,53 +34,52 @@ class MovieDetailController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .white
-        navigationController?.navigationBar.prefersLargeTitles = false
         view.addSubview(collection)
         collection.frame = view.bounds
     }
     
     private func configureViewModel() {
-        viewModel.getMovieDetail()
-        viewModel.getSimilarMovies()
-        viewModel.success = { [weak self] in
-            self?.collection.reloadData()
+        viewModel.getActorData()
+        viewModel.getActorMovies()
+        viewModel.success = {
+            self.collection.reloadData()
         }
-        viewModel.errorHandler = { error in
+        viewModel.errorHandler = { [weak self] error in
             print(error)
         }
     }
 }
 
-extension MovieDetailController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension ActorDetailController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.similarMovies.count
+        viewModel.actorMovies.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(ImageLabelCell.self)", for: indexPath) as! ImageLabelCell
-        cell.configure(data: viewModel.similarMovies[indexPath.row])
+        cell.configure(data: viewModel.actorMovies[indexPath.item])
         return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "\(MovieHeaderView.self)", for: indexPath) as! MovieHeaderView
-        if let data = viewModel.data {
-            header.configure(model: data)
-        }
-        return header
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        .init(width: collectionView.frame.width, height: 600)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         .init(width: 168, height: 320)
     }
     
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "\(ActorHeaderView.self)", for: indexPath) as! ActorHeaderView
+        if let data = viewModel.actorData {
+            header.configure(model: data)
+        }
+        return header
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        .init(width: collectionView.frame.width, height: 480)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = MovieDetailController()
-        vc.viewModel.movieId = viewModel.similarMovies[indexPath.row].id
-        navigationController?.show(vc, sender: nil)
+        vc.viewModel.movieId = viewModel.actorMovies[indexPath.item].id
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

@@ -1,16 +1,15 @@
 //
-//  MovieDetailCell.swift
+//  HeaderView.swift
 //  MovieApp
 //
-//  Created by Elnur Mammadov on 09.02.25.
+//  Created by Elnur Mammadov on 11.02.25.
 //
 
 import UIKit
 
-class MovieDetailCell: UITableViewCell {
+class MovieHeaderView: UICollectionReusableView {
     
     private var movieGenres = [GenreElement]()
-    private var similarMovies = [MovieResult]()
     
     //    MARK: Setup UI elements
     
@@ -35,7 +34,7 @@ class MovieDetailCell: UITableViewCell {
         l.font = .systemFont(ofSize: 20, weight: .bold)
         l.textColor = .black
         l.textAlignment = .left
-        l.numberOfLines = 0
+        l.numberOfLines = 3
         l.translatesAutoresizingMaskIntoConstraints = false
         return l
     }()
@@ -91,6 +90,7 @@ class MovieDetailCell: UITableViewCell {
     private lazy var movieDate: UILabel = {
         let l = UILabel()
         l.textColor = .gray
+        l.font = .systemFont(ofSize: 14, weight: .regular)
         l.translatesAutoresizingMaskIntoConstraints = false
         return l
     }()
@@ -107,6 +107,7 @@ class MovieDetailCell: UITableViewCell {
         let l = UILabel()
         l.textColor = UIColor(named: "starColour")
         l.numberOfLines = 0
+        l.font = .systemFont(ofSize: 14, weight: .regular)
         l.translatesAutoresizingMaskIntoConstraints = false
         return l
     }()
@@ -122,6 +123,7 @@ class MovieDetailCell: UITableViewCell {
     private lazy var runtime: UILabel = {
         let l = UILabel()
         l.textColor = .gray
+        l.font = .systemFont(ofSize: 14, weight: .regular)
         l.translatesAutoresizingMaskIntoConstraints = false
         return l
     }()
@@ -152,41 +154,26 @@ class MovieDetailCell: UITableViewCell {
     private lazy var overview: UILabel = {
         let l = UILabel()
         l.font = .systemFont(ofSize: 14, weight: .regular)
-        l.numberOfLines = 0
+        l.numberOfLines = 6
         l.textAlignment = .left
         l.translatesAutoresizingMaskIntoConstraints = false
         return l
     }()
     
     private lazy var similar: UILabel = {
-        let l = UILabel()
-        l.text = "Similar Movies"
-        l.font = .systemFont(ofSize: 17, weight: .semibold)
-        l.numberOfLines = 0
-        l.textAlignment = .left
-        l.translatesAutoresizingMaskIntoConstraints = false
-        return l
-    }()
+            let l = UILabel()
+            l.text = "Similar Movies"
+            l.font = .systemFont(ofSize: 17, weight: .semibold)
+            l.numberOfLines = 0
+            l.textAlignment = .left
+            l.translatesAutoresizingMaskIntoConstraints = false
+            return l
+        }()
     
-    private lazy var similarCollection: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.minimumInteritemSpacing = 16
-        layout.sectionInset = .init(top: 0, left: 24, bottom: 0, right: 24)
-        let c = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        c.dataSource = self
-        c.delegate = self
-        c.showsHorizontalScrollIndicator = false
-        c.register(ImageLabelCell.self, forCellWithReuseIdentifier: "\(ImageLabelCell.self)")
-        c.translatesAutoresizingMaskIntoConstraints = false
-        return c
-    }()
+//    MARK: - Life cycle
     
-    //    MARK: - Life cycle
-    
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
         setupUI()
         setupConstraints()
@@ -194,12 +181,6 @@ class MovieDetailCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
     
     private func setupUI() {
@@ -211,8 +192,7 @@ class MovieDetailCell: UITableViewCell {
          genreCollection,
          aboutMovie,
          overview,
-         similar,
-         similarCollection].forEach { addSubview($0) }
+         similar].forEach(addSubview)
         
         [dateImage,
          movieDate].forEach { dateView.addSubview($0) }
@@ -246,7 +226,7 @@ class MovieDetailCell: UITableViewCell {
             dateView.widthAnchor.constraint(equalToConstant: 80),
             dateView.heightAnchor.constraint(equalToConstant: 32),
             
-            voteView.widthAnchor.constraint(equalToConstant: 100),
+            voteView.widthAnchor.constraint(equalToConstant: 90),
             voteView.heightAnchor.constraint(equalToConstant: 32),
             
             dateImage.leadingAnchor.constraint(equalTo: dateView.leadingAnchor, constant: 4),
@@ -281,19 +261,13 @@ class MovieDetailCell: UITableViewCell {
             overview.leadingAnchor.constraint(equalTo: aboutMovie.leadingAnchor),
             overview.trailingAnchor.constraint(equalTo: aboutMovie.trailingAnchor),
             
-            similar.topAnchor.constraint(equalTo: overview.bottomAnchor, constant: 40),
+            similar.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24),
             similar.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
-            similar.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -28),
-            
-            similarCollection.topAnchor.constraint(equalTo: similar.bottomAnchor, constant: 16),
-            similarCollection.leadingAnchor.constraint(equalTo: leadingAnchor),
-            similarCollection.trailingAnchor.constraint(equalTo: trailingAnchor),
-            similarCollection.heightAnchor.constraint(equalToConstant: 320),
-            similarCollection.bottomAnchor.constraint(equalTo: bottomAnchor)
+            similar.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -28)
         ])
     }
     
-    func configure(model: MovieDetail, similar: [MovieResult]) {
+    func configure(model: MovieDetail) {
         backImage.loadImage(url: model.backdropPath ?? "")
         posterImage.loadImage(url: model.posterPath ?? "")
         titleLabel.text = model.title
@@ -306,38 +280,21 @@ class MovieDetailCell: UITableViewCell {
         
         movieGenres = model.genres ?? []
         genreCollection.reloadData()
-        
-        similarMovies = similar
-        similarCollection.reloadData()
     }
 }
 
-extension MovieDetailCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension MovieHeaderView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if (collectionView == similarCollection) {
-            return similarMovies.count
-        } else {
-            return movieGenres.count
-        }
+        movieGenres.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if (collectionView == genreCollection) {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(GenreCell.self)", for: indexPath) as! GenreCell
-            cell.configure(genre: movieGenres[indexPath.item].name ?? "")
-            return cell
-        } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(ImageLabelCell.self)", for: indexPath) as! ImageLabelCell
-            cell.configure(data: similarMovies[indexPath.item])
-            return cell
-        }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(GenreCell.self)", for: indexPath) as! GenreCell
+        cell.configure(genre: movieGenres[indexPath.item].name ?? "")
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if (collectionView == similarCollection) {
-            .init(width: 168, height: collectionView.frame.height)
-        } else {
-            .init(width: collectionView.frame.width/4-10, height: 30)
-        }
+        .init(width: collectionView.frame.width/4-10, height: 30)
     }
 }

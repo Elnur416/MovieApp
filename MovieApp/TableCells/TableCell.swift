@@ -22,7 +22,7 @@ class TableCell: UITableViewCell {
     private lazy var movieName: UILabel = {
         let l = UILabel()
         l.font = .systemFont(ofSize: 16, weight: .medium)
-        l.numberOfLines = 0
+        l.numberOfLines = 2
         l.translatesAutoresizingMaskIntoConstraints = false
         return l
     }()
@@ -69,6 +69,7 @@ class TableCell: UITableViewCell {
         l.font = .systemFont(ofSize: 14, weight: .regular)
         l.textColor = .gray
         l.numberOfLines = 0
+        l.textAlignment = .left
         l.translatesAutoresizingMaskIntoConstraints = false
         return l
     }()
@@ -133,7 +134,8 @@ class TableCell: UITableViewCell {
             calendarImage.widthAnchor.constraint(equalToConstant: 16),
             
             releaseDate.centerYAnchor.constraint(equalTo: calendarImage.centerYAnchor),
-            releaseDate.leadingAnchor.constraint(equalTo: calendarImage.trailingAnchor, constant: 8)
+            releaseDate.leadingAnchor.constraint(equalTo: calendarImage.trailingAnchor, constant: 8),
+            releaseDate.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
         ])
     }
     

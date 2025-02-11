@@ -67,4 +67,10 @@ extension ActorController: UICollectionViewDataSource, UICollectionViewDelegate,
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         .init(width: 168, height: 220)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = ActorDetailController()
+        vc.viewModel.actorId = viewModel.actors[indexPath.row].id
+        navigationController?.show(vc, sender: nil)
+    }
 }

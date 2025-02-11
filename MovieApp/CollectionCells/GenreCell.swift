@@ -14,7 +14,6 @@ class GenreCell: UICollectionViewCell {
         label.font = .systemFont(ofSize: 10, weight: .regular)
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.text = "Adventure"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

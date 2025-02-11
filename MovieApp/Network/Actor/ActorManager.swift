@@ -10,6 +10,13 @@ import Foundation
 class ActorManager: ActorManagerUseCase {
     private let manager = NetworkManager()
     
+    func getActorDetails(actorId: Int, completion: @escaping ((ActorDetail?, String?) -> Void)) {
+        let path = ActorEndpoint.detail(id: actorId).path
+        manager.request(path: path,
+                        model: ActorDetail.self,
+                        completion: completion)
+    }
+    
     func searchActor() {
     }
     
@@ -20,10 +27,10 @@ class ActorManager: ActorManagerUseCase {
                         completion: completion)
     }
     
-    func getActorMovies(actorId: Int, completion: @escaping ((Movie?, String?) -> Void)) {
+    func getActorMovies(actorId: Int, completion: @escaping ((ActorMovies?, String?) -> Void)) {
         let path = ActorEndpoint.actorMovies(id: actorId).path
         manager.request(path: path,
-                        model: Movie.self,
+                        model: ActorMovies.self,
                         completion: completion)
     }
     

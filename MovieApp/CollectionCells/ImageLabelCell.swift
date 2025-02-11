@@ -45,6 +45,7 @@ class ImageLabelCell: UICollectionViewCell {
     }
     
     private func setupUI() {
+        backgroundColor = .white
         [movieTitle,
          movieImage].forEach { addSubview($0) }
     }
