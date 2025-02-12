@@ -9,9 +9,13 @@ import UIKit
 
 class MovieHeaderView: UICollectionReusableView {
     
-    private var movieGenres = [GenreElement]()
+//    MARK: Properties
     
-    //    MARK: Setup UI elements
+    private var movieGenres = [GenreElement]()
+    private var items = ["Similar Movies", "Collection"]
+    var segmentCallback: ((Int) -> Void)?
+    
+    //    MARK: - Setup UI elements
     
     private lazy var backImage: UIImageView = {
         let i = UIImageView()
@@ -160,15 +164,13 @@ class MovieHeaderView: UICollectionReusableView {
         return l
     }()
     
-    private lazy var similar: UILabel = {
-            let l = UILabel()
-            l.text = "Similar Movies"
-            l.font = .systemFont(ofSize: 17, weight: .semibold)
-            l.numberOfLines = 0
-            l.textAlignment = .left
-            l.translatesAutoresizingMaskIntoConstraints = false
-            return l
-        }()
+    private lazy var segmentControl: UISegmentedControl = {
+        let view = UISegmentedControl(items: self.items)
+        view.selectedSegmentIndex = 0
+        view.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
 //    MARK: - Life cycle
     
@@ -192,7 +194,7 @@ class MovieHeaderView: UICollectionReusableView {
          genreCollection,
          aboutMovie,
          overview,
-         similar].forEach(addSubview)
+         segmentControl].forEach(addSubview)
         
         [dateImage,
          movieDate].forEach { dateView.addSubview($0) }
@@ -261,9 +263,9 @@ class MovieHeaderView: UICollectionReusableView {
             overview.leadingAnchor.constraint(equalTo: aboutMovie.leadingAnchor),
             overview.trailingAnchor.constraint(equalTo: aboutMovie.trailingAnchor),
             
-            similar.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24),
-            similar.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
-            similar.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -28)
+            segmentControl.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24),
+            segmentControl.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
+            segmentControl.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -28)
         ])
     }
     
@@ -280,6 +282,17 @@ class MovieHeaderView: UICollectionReusableView {
         
         movieGenres = model.genres ?? []
         genreCollection.reloadData()
+    }
+    
+    @objc private func segmentChanged() {
+        switch segmentControl.selectedSegmentIndex {
+        case 0:
+            segmentCallback?(0)
+        case 1:
+            segmentCallback?(1)
+        default:
+            return
+        }
     }
 }
 

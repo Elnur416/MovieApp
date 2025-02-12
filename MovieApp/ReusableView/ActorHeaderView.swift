@@ -23,8 +23,37 @@ class ActorHeaderView: UICollectionReusableView {
         l.font = .systemFont(ofSize: 20, weight: .bold)
         l.textColor = .black
         l.numberOfLines = 0
-        l.textAlignment = .center
+        l.textAlignment = .left
         l.text = "Atqkhd akehfake"
+        l.translatesAutoresizingMaskIntoConstraints = false
+        return l
+    }()
+    
+    private lazy var placeLabel: UILabel = {
+        let l = UILabel()
+        l.text = "London, England, UK"
+        l.font = .systemFont(ofSize: 17, weight: .regular)
+        l.textColor = UIColor(named: "mainColour")
+        l.numberOfLines = 0
+        l.translatesAutoresizingMaskIntoConstraints = false
+        return l
+    }()
+    
+    private lazy var aboutActor: UILabel = {
+        let l = UILabel()
+        l.text = "About actor"
+        l.font = .systemFont(ofSize: 17, weight: .semibold)
+        l.numberOfLines = 0
+        l.textAlignment = .left
+        l.translatesAutoresizingMaskIntoConstraints = false
+        return l
+    }()
+    
+    private lazy var biography: UILabel = {
+        let l = UILabel()
+        l.font = .systemFont(ofSize: 14, weight: .regular)
+        l.numberOfLines = 6
+        l.textAlignment = .left
         l.translatesAutoresizingMaskIntoConstraints = false
         return l
     }()
@@ -53,19 +82,34 @@ class ActorHeaderView: UICollectionReusableView {
     private func setupUI() {
         [actorImage,
          actorName,
+         placeLabel,
+         aboutActor,
+         biography,
          knownLabel].forEach { addSubview($0) }
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            actorImage.topAnchor.constraint(equalTo: topAnchor),
-            actorImage.centerXAnchor.constraint(equalTo: centerXAnchor),
-            actorImage.widthAnchor.constraint(equalToConstant: 350),
-            actorImage.heightAnchor.constraint(equalToConstant: 350),
+            actorImage.topAnchor.constraint(equalTo: topAnchor, constant: 28),
+            actorImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
+            actorImage.widthAnchor.constraint(equalToConstant: 120),
+            actorImage.heightAnchor.constraint(equalToConstant: 150),
             
-            actorName.topAnchor.constraint(equalTo: actorImage.bottomAnchor, constant: 20),
-            actorName.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-            actorName.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
+            actorName.topAnchor.constraint(equalTo: topAnchor, constant: 32),
+            actorName.leadingAnchor.constraint(equalTo: actorImage.trailingAnchor, constant: 32),
+            actorName.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            
+            placeLabel.topAnchor.constraint(equalTo: actorName.bottomAnchor, constant: 16),
+            placeLabel.leadingAnchor.constraint(equalTo: actorImage.trailingAnchor, constant: 32),
+            placeLabel.trailingAnchor.constraint(equalTo: actorName.trailingAnchor),
+            
+            aboutActor.topAnchor.constraint(equalTo: actorImage.bottomAnchor, constant: 24),
+            aboutActor.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
+            aboutActor.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -28),
+            
+            biography.topAnchor.constraint(equalTo: aboutActor.bottomAnchor, constant: 16),
+            biography.leadingAnchor.constraint(equalTo: aboutActor.leadingAnchor),
+            biography.trailingAnchor.constraint(equalTo: aboutActor.trailingAnchor),
             
             knownLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24),
             knownLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
@@ -76,5 +120,7 @@ class ActorHeaderView: UICollectionReusableView {
     func configure(model: ActorDetail) {
         actorImage.loadImage(url: model.profilePath ?? "")
         actorName.text = model.name
+        placeLabel.text = model.placeOfBirth
+        biography.text = model.biography
     }
 }

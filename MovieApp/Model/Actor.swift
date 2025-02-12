@@ -37,6 +37,14 @@ struct ActorResult: Codable, MovieCellProtocol {
     var imageURL: String {
         profilePath ?? ""
     }
+    
+    var overviewText: String {
+        ""
+    }
+    
+    var departmentText: String {
+        knownForDepartment ?? ""
+    }
 
     enum CodingKeys: String, CodingKey {
         case adult, gender, id

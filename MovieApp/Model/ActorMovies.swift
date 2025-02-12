@@ -1,8 +1,8 @@
 //
-//  ActorMovies.swift
+//  Model.swift
 //  MovieApp
 //
-//  Created by Elnur Mammadov on 11.02.25.
+//  Created by Elnur Mammadov on 02.02.25.
 //
 
 import Foundation
@@ -12,9 +12,13 @@ struct ActorMovies: Codable {
     let cast, crew: [Cast]?
     let id: Int?
 }
-
 // MARK: - Cast
 struct Cast: Codable, MovieCellProtocol {
+    
+    var departmentText: String {
+        ""
+    }
+    
     var titleText: String {
         "\(title ?? "") (\(releaseDate?.prefix(4) ?? ""))"
     }
@@ -23,11 +27,17 @@ struct Cast: Codable, MovieCellProtocol {
         posterPath ?? ""
     }
     
+    var overviewText: String {
+        ""
+    }
+    
+    
+    
     let adult: Bool?
     let backdropPath: String?
     let genreIDS: [Int]?
     let id: Int?
-    let originalLanguage: OriginalLanguage?
+    let originalLanguage: String?
     let originalTitle, overview: String?
     let popularity: Double?
     let posterPath: String?
@@ -37,9 +47,9 @@ struct Cast: Codable, MovieCellProtocol {
     let voteCount: Int?
     let character, creditID: String?
     let order: Int?
-    let department: Department?
+    let department: String?
     let job: String?
-
+    
     enum CodingKeys: String, CodingKey {
         case adult
         case backdropPath = "backdrop_path"
@@ -65,10 +75,10 @@ enum Department: String, Codable {
     case production = "Production"
     case writing = "Writing"
 }
-
 enum OriginalLanguage: String, Codable {
     case de = "de"
     case en = "en"
     case fr = "fr"
     case it = "it"
+    case ja = "ja"
 }

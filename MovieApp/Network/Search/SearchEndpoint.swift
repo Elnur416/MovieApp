@@ -8,12 +8,18 @@
 import Foundation
 
 enum SearchEndpoint {
-    case search(movie: String)
+    case movie(movie: String)
+    case actor(actor: String)
+    case collection(collection: String)
     
     var path: String {
         switch self {
-        case .search(let movie):
+        case .movie(let movie):
             return NetworkHelper.shared.configureURL(endpoint: "search/movie?query=\(movie)")
+        case .actor(let actor):
+            return NetworkHelper.shared.configureURL(endpoint: "search/person?query=\(actor)")
+        case .collection(let collection):
+            return NetworkHelper.shared.configureURL(endpoint: "search/collection?query=\(collection)")
         }
     }
 }

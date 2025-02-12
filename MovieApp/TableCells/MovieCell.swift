@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TableCell: UITableViewCell {
+class MovieCell: UITableViewCell {
     
     private var movieGenres = [String]()
     
@@ -153,7 +153,7 @@ class TableCell: UITableViewCell {
     }
 }
 
-extension TableCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension MovieCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         movieGenres.count
     }

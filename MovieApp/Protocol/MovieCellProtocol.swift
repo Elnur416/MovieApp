@@ -10,4 +10,6 @@ import Foundation
 protocol MovieCellProtocol {
     var titleText: String { get }
     var imageURL: String { get }
+    var overviewText: String { get }
+    var departmentText: String { get }
 }

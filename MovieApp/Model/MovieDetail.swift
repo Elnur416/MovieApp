@@ -58,7 +58,23 @@ struct MovieDetail: Codable {
 }
 
 // MARK: - BelongsToCollection
-struct BelongsToCollection: Codable {
+struct BelongsToCollection: Codable, MovieCellProtocol {
+    var titleText: String {
+        name ?? ""
+    }
+    
+    var imageURL: String {
+        posterPath ?? ""
+    }
+    
+    var overviewText: String {
+        ""
+    }
+    
+    var departmentText: String {
+        ""
+    }
+    
     let id: Int?
     let name, posterPath, backdropPath: String?
 

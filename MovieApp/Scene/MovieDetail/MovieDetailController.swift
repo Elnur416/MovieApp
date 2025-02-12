@@ -57,12 +57,26 @@ class MovieDetailController: UIViewController {
 
 extension MovieDetailController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.similarMovies.count
+        if viewModel.segmentIndex == 0 {
+            return viewModel.similarMovies.count
+        } else {
+            if viewModel.data?.belongsToCollection != nil {
+                return 1
+            } else {
+                return 0
+            }
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(ImageLabelCell.self)", for: indexPath) as! ImageLabelCell
-        cell.configure(data: viewModel.similarMovies[indexPath.row])
+        if viewModel.segmentIndex == 0 {
+            cell.configure(data: viewModel.similarMovies[indexPath.row])
+        } else {
+            if let data = viewModel.collection {
+                cell.configure(data: data)
+            }
+        }
         return cell
     }
     
@@ -70,6 +84,10 @@ extension MovieDetailController: UICollectionViewDataSource, UICollectionViewDel
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "\(MovieHeaderView.self)", for: indexPath) as! MovieHeaderView
         if let data = viewModel.data {
             header.configure(model: data)
+        }
+        header.segmentCallback = { segmentIndex in
+            self.viewModel.segmentIndex = segmentIndex
+            self.collection.reloadData()
         }
         return header
     }
@@ -83,8 +101,14 @@ extension MovieDetailController: UICollectionViewDataSource, UICollectionViewDel
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = MovieDetailController()
-        vc.viewModel.movieId = viewModel.similarMovies[indexPath.row].id
-        navigationController?.show(vc, sender: nil)
+        if viewModel.segmentIndex == 0 {
+            let vc = MovieDetailController()
+            vc.viewModel.movieId = viewModel.similarMovies[indexPath.row].id
+            navigationController?.show(vc, sender: nil)
+        } else {
+            let vc = CollectionController()
+            vc.viewModel.collectionID = viewModel.data?.belongsToCollection?.id
+            navigationController?.show(vc, sender: nil)
+        }
     }
 }

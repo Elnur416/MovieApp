@@ -51,6 +51,14 @@ struct MovieResult: Codable, MovieCellProtocol {
     var imageURL: String {
         posterPath ?? ""
     }
+    
+    var overviewText: String {
+        ""
+    }
+    
+    var departmentText: String {
+        ""
+    }
 
     enum CodingKeys: String, CodingKey {
         case adult

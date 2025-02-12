@@ -10,6 +10,8 @@ import Foundation
 class MovieDetailViewModel {
     var data: MovieDetail?
     var similarMovies = [MovieResult]()
+    var collection: BelongsToCollection?
+    var segmentIndex: Int? = 0
     var movieId: Int?
     private let detailManager = MovieDetailManager()
     private let similarManager = SimilarManager()
@@ -20,6 +22,7 @@ class MovieDetailViewModel {
         detailManager.getMovieDetail(id: self.movieId ?? 0) { data, error in
             if let data {
                 self.data = data
+                self.collection = data.belongsToCollection
                 self.success?()
             } else if let error {
                 self.errorHandler?(error)

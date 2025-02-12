@@ -10,10 +10,21 @@ import UIKit
 class SearchController: UIViewController {
     
     private let viewModel = SearchViewModel()
+    private var items = ["Movies", "Actors", "Collections"]
+    
+    //    MARK: UI elements
+    
+    private lazy var segmentControl: UISegmentedControl = {
+        let view = UISegmentedControl(items: self.items)
+        view.selectedSegmentIndex = 0
+        view.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     private lazy var searchView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(named: "starColour")
+        view.backgroundColor = .lightGray
         view.layer.cornerRadius = 27
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -27,7 +38,7 @@ class SearchController: UIViewController {
         txt.font = UIFont.systemFont(ofSize: 16)
         txt.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 60))
         txt.leftViewMode = .always
-        txt.placeholder = "Search for a movie"
+        txt.placeholder = "Search for ..."
         txt.tintColor = .black
         let rightIcon = UIImageView(frame: CGRect(x: 10, y: 12.5, width: 24, height: 24))
         rightIcon.tintColor = .black
@@ -37,7 +48,7 @@ class SearchController: UIViewController {
         txt.rightViewMode = .always
         txt.rightView = rightView
         txt.returnKeyType = .search
-        txt.layer.borderColor = UIColor.orange.cgColor
+        txt.layer.borderColor = UIColor.black.cgColor
         txt.layer.borderWidth = 1.5
         txt.addTarget(self, action: #selector(searchTextDidChange), for: .editingChanged)
         txt.translatesAutoresizingMaskIntoConstraints = false
@@ -48,14 +59,15 @@ class SearchController: UIViewController {
         let t = UITableView()
         t.dataSource = self
         t.delegate = self
-        t.register(TableCell.self, forCellReuseIdentifier: "\(TableCell.self)")
+        t.register(MovieCell.self, forCellReuseIdentifier: "\(MovieCell.self)")
+        t.register(ImageLabelOvrCell.self, forCellReuseIdentifier: "\(ImageLabelOvrCell.self)")
         t.translatesAutoresizingMaskIntoConstraints = false
         return t
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupUI()
         setupConstraints()
         configureViewModel()
@@ -65,14 +77,20 @@ class SearchController: UIViewController {
         view.backgroundColor = .white
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "Search"
-        [searchView,
+        [segmentControl,
+         searchView,
          table].forEach { view.addSubview($0) }
         searchView.addSubview(searchField)
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            searchView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12),
+            segmentControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12),
+            segmentControl.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.92),
+            //            segmentControl.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 30),
+            segmentControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            searchView.topAnchor.constraint(equalTo: segmentControl.bottomAnchor, constant: 16),
             searchView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.92),
             searchView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.061),
             searchView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -101,21 +119,58 @@ class SearchController: UIViewController {
     }
     
     @objc private func searchTextDidChange() {
+        segmentChanged()
+    }
+    
+    @objc private func segmentChanged() {
         guard let text = searchField.text else { return }
-        viewModel.fetchMovies(query: text)
-        table.reloadData()
+        switch segmentControl.selectedSegmentIndex {
+        case 0:
+            viewModel.fetchMovies(query: text)
+            table.reloadData()
+        case 1:
+            viewModel.fetchActors(query: text)
+            table.reloadData()
+        case 2:
+            viewModel.fetchCollections(query: text)
+            table.reloadData()
+        default:
+            return
+        }
     }
 }
 
 extension SearchController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.searchedMovies.count
+        switch segmentControl.selectedSegmentIndex {
+        case 0:
+            return viewModel.searchedMovies.count
+        case 1:
+            return viewModel.searchedActors.count
+        case 2:
+            return viewModel.searchedCollections.count
+        default:
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "\(TableCell.self)", for: indexPath) as! TableCell
-        cell.configure(model: viewModel.searchedMovies[indexPath.row])
-        return cell
+        switch segmentControl.selectedSegmentIndex {
+        case 0:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "\(MovieCell.self)", for: indexPath) as! MovieCell
+            cell.configure(model: viewModel.searchedMovies[indexPath.row])
+            return cell
+        case 1:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "\(ImageLabelOvrCell.self)") as! ImageLabelOvrCell
+            cell.configure(model: viewModel.searchedActors[indexPath.row], collectionHidden: false)
+            return cell
+        case 2:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "\(ImageLabelOvrCell.self)") as! ImageLabelOvrCell
+            cell.configure(model: viewModel.searchedCollections[indexPath.row], collectionHidden: true)
+            return cell
+        default:
+            return UITableViewCell()
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -123,8 +178,21 @@ extension SearchController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = MovieDetailController()
-        vc.viewModel.movieId = viewModel.searchedMovies[indexPath.row].id
-        navigationController?.show(vc, sender: nil)
+        switch segmentControl.selectedSegmentIndex {
+        case 0:
+            let vc = MovieDetailController()
+            vc.viewModel.movieId = viewModel.searchedMovies[indexPath.row].id
+            navigationController?.show(vc, sender: nil)
+        case 1:
+            let vc = ActorDetailController()
+            vc.viewModel.actorId = viewModel.searchedActors[indexPath.row].id
+            navigationController?.show(vc, sender: nil)
+        case 2:
+            let vc = CollectionController()
+            vc.viewModel.collectionID = viewModel.searchedCollections[indexPath.row].id
+            navigationController?.show(vc, sender: nil)
+        default:
+            return
+        }
     }
 }

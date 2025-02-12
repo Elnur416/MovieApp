@@ -1,15 +1,17 @@
 //
-//  ActorDetailController.swift
+//  CollectionController.swift
 //  MovieApp
 //
-//  Created by Elnur Mammadov on 10.02.25.
+//  Created by Elnur Mammadov on 12.02.25.
 //
 
 import UIKit
 
-class ActorDetailController: UIViewController {
+class CollectionController: UIViewController {
     
-    let viewModel = ActorDetailViewModel()
+    let viewModel = CollectionViewModel()
+    
+//    MARK: UI elements
     
     private lazy var collection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -20,14 +22,14 @@ class ActorDetailController: UIViewController {
         c.delegate = self
         c.showsVerticalScrollIndicator = false
         c.register(ImageLabelCell.self, forCellWithReuseIdentifier: "\(ImageLabelCell.self)")
-        c.register(ActorHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "\(ActorHeaderView.self)")
+        c.register(CollectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "\(CollectionHeader.self)")
         c.translatesAutoresizingMaskIntoConstraints = false
         return c
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupUI()
         configureViewModel()
     }
@@ -40,8 +42,7 @@ class ActorDetailController: UIViewController {
     }
     
     private func configureViewModel() {
-        viewModel.getActorData()
-        viewModel.getActorMovies()
+        viewModel.getCollectionData()
         viewModel.success = {
             self.collection.reloadData()
         }
@@ -51,14 +52,16 @@ class ActorDetailController: UIViewController {
     }
 }
 
-extension ActorDetailController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension CollectionController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.actorMovies.count
+        viewModel.data?.parts?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(ImageLabelCell.self)", for: indexPath) as! ImageLabelCell
-        cell.configure(data: viewModel.actorMovies[indexPath.item])
+        if let data = viewModel.data?.parts?[indexPath.item] {
+            cell.configure(data: data)
+        }
         return cell
     }
     
@@ -67,20 +70,20 @@ extension ActorDetailController: UICollectionViewDataSource, UICollectionViewDel
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "\(ActorHeaderView.self)", for: indexPath) as! ActorHeaderView
-        if let data = viewModel.actorData {
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "\(CollectionHeader.self)", for: indexPath) as! CollectionHeader
+        if let data = viewModel.data {
             header.configure(model: data)
         }
         return header
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        .init(width: collectionView.frame.width, height: 440)
+        .init(width: collectionView.frame.width, height: 450)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = MovieDetailController()
-        vc.viewModel.movieId = viewModel.actorMovies[indexPath.item].id
-        navigationController?.pushViewController(vc, animated: true)
+        vc.viewModel.movieId = viewModel.data?.parts?[indexPath.item].id ?? 0
+        navigationController?.show(vc, sender: nil)
     }
 }
