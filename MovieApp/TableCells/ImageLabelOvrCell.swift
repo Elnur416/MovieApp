@@ -11,6 +11,8 @@ class ImageLabelOvrCell: UITableViewCell {
     
     private var department: String?
     
+//    MARK: UI elements
+    
     private lazy var titleImage: UIImageView = {
         let i = UIImageView()
         i.layer.cornerRadius = 16
@@ -46,6 +48,8 @@ class ImageLabelOvrCell: UITableViewCell {
         l.translatesAutoresizingMaskIntoConstraints = false
         return l
     }()
+    
+//    MARK: - Life cycle
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -96,6 +100,8 @@ class ImageLabelOvrCell: UITableViewCell {
         ])
     }
     
+//    MARK: - Configure
+    
     func configure(model: MovieCellProtocol, collectionHidden: Bool) {
         titleImage.loadImage(url: model.imageURL)
         titleLabel.text = model.titleText
@@ -106,6 +112,8 @@ class ImageLabelOvrCell: UITableViewCell {
         collection.reloadData()
     }
 }
+
+//MARK: - Setup collection
 
 extension ImageLabelOvrCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

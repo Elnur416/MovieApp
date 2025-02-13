@@ -9,10 +9,12 @@ import UIKit
 
 class SearchController: UIViewController {
     
+//    MARK: Properties
+    
     private let viewModel = SearchViewModel()
     private var items = ["Movies", "Actors", "Collections"]
     
-    //    MARK: UI elements
+//    MARK:  - UI elements
     
     private lazy var segmentControl: UISegmentedControl = {
         let view = UISegmentedControl(items: self.items)
@@ -64,6 +66,8 @@ class SearchController: UIViewController {
         t.translatesAutoresizingMaskIntoConstraints = false
         return t
     }()
+    
+//    MARK: - Life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -139,6 +143,8 @@ class SearchController: UIViewController {
         }
     }
 }
+
+//MARK: - Setup table
 
 extension SearchController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

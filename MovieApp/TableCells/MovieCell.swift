@@ -11,6 +11,8 @@ class MovieCell: UITableViewCell {
     
     private var movieGenres = [String]()
     
+//    MARK: UI elements
+    
     private lazy var movieImage: UIImageView = {
         let i = UIImageView()
         i.layer.cornerRadius = 16
@@ -73,6 +75,8 @@ class MovieCell: UITableViewCell {
         l.translatesAutoresizingMaskIntoConstraints = false
         return l
     }()
+    
+//    MARK: - Life cycle
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -139,6 +143,8 @@ class MovieCell: UITableViewCell {
         ])
     }
     
+//    MARK: - Configure
+    
     func configure(model: MovieResult) {
         movieName.text = model.title
         movieImage.loadImage(url: model.posterPath ?? "")
@@ -152,6 +158,8 @@ class MovieCell: UITableViewCell {
         collection.reloadData()
     }
 }
+
+//MARK: - Setup collection
 
 extension MovieCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

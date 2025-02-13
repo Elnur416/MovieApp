@@ -9,6 +9,8 @@ import UIKit
 
 class GenreCell: UICollectionViewCell {
     
+//    MARK: UI elements
+    
     private lazy var genreLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 10, weight: .regular)
@@ -17,6 +19,8 @@ class GenreCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+//    MARK: - Life cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,6 +38,8 @@ class GenreCell: UICollectionViewCell {
         genreLabel.frame = bounds
         layer.cornerRadius = 8
     }
+    
+//    MARK: - Configure
     
     func configure(genre: String) {
         genreLabel.text = genre

@@ -10,11 +10,13 @@ import Foundation
 class MovieDetailViewModel {
     var data: MovieDetail?
     var similarMovies = [MovieResult]()
+    var video = [VideoResult]()
     var collection: BelongsToCollection?
     var segmentIndex: Int? = 0
     var movieId: Int?
     private let detailManager = MovieDetailManager()
     private let similarManager = SimilarManager()
+    private let videoManager = VideoManager()
     var success: (() -> Void)?
     var errorHandler: ((String) -> Void)?
     
@@ -34,6 +36,17 @@ class MovieDetailViewModel {
         similarManager.getSimilarMovies(movieId: self.movieId ?? 0) { data, error in
             if let data {
                 self.similarMovies = data.results ?? []
+                self.success?()
+            } else if let error {
+                self.errorHandler?(error)
+            }
+        }
+    }
+    
+    func getVideos() {
+        videoManager.getVideos(movieId: movieId ?? 0) { data, error in
+            if let data {
+                self.video = data.results ?? []
                 self.success?()
             } else if let error {
                 self.errorHandler?(error)

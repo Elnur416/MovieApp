@@ -87,6 +87,8 @@ class CollectionHeader: UICollectionReusableView {
         ])
     }
     
+//    MARK: - Configure
+    
     func configure(model: Collection) {
         backImage.loadImage(url: model.backdropPath ?? "")
         posterImage.loadImage(url: model.posterPath ?? "")

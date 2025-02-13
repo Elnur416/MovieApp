@@ -11,6 +11,8 @@ class ActorController: UIViewController {
     
     private let viewModel = ActorViewModel()
     
+//    MARK: UI elements
+    
     private lazy var collection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -24,6 +26,8 @@ class ActorController: UIViewController {
         c.translatesAutoresizingMaskIntoConstraints = false
         return c
     }()
+    
+//    MARK: - Life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,6 +56,8 @@ class ActorController: UIViewController {
         }
     }
 }
+
+//MARK: - Setup collection
 
 extension ActorController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

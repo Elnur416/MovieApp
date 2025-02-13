@@ -26,6 +26,8 @@ class CollectionController: UIViewController {
         c.translatesAutoresizingMaskIntoConstraints = false
         return c
     }()
+    
+//    MARK: Life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,6 +53,8 @@ class CollectionController: UIViewController {
         }
     }
 }
+
+//MARK: Setup collection
 
 extension CollectionController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

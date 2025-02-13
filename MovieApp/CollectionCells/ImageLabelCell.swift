@@ -62,6 +62,8 @@ class ImageLabelCell: UICollectionViewCell {
         ])
     }
     
+//    MARK: - Configure
+    
     func configure(data: MovieCellProtocol) {
         movieTitle.text = data.titleText
         movieImage.loadImage(url: data.imageURL)

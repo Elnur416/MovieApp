@@ -9,11 +9,13 @@ import UIKit
 
 class HomeCell: UICollectionViewCell {
     
+// MARK: Properties
+    
     private var data = [MovieResult]()
     var seeAllCallback: (() -> Void)?
     var movieCallback: ((Int) -> Void)?
     
-//    MARK: Setup UI elements
+//    MARK: - Setup UI elements
     
     private lazy var titleLabel: UILabel = {
         let l = UILabel()
@@ -85,6 +87,8 @@ class HomeCell: UICollectionViewCell {
     @objc private func seeAllAction() {
         seeAllCallback?()
     }
+    
+//    MARK: - Configure
     
     func configure(text: String, data: [MovieResult]) {
         titleLabel.text = text

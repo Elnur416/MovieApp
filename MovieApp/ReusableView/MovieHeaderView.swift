@@ -269,6 +269,19 @@ class MovieHeaderView: UICollectionReusableView {
         ])
     }
     
+    @objc private func segmentChanged() {
+        switch segmentControl.selectedSegmentIndex {
+        case 0:
+            segmentCallback?(0)
+        case 1:
+            segmentCallback?(1)
+        default:
+            return
+        }
+    }
+    
+//    MARK: - Configure
+    
     func configure(model: MovieDetail) {
         backImage.loadImage(url: model.backdropPath ?? "")
         posterImage.loadImage(url: model.posterPath ?? "")
@@ -283,18 +296,9 @@ class MovieHeaderView: UICollectionReusableView {
         movieGenres = model.genres ?? []
         genreCollection.reloadData()
     }
-    
-    @objc private func segmentChanged() {
-        switch segmentControl.selectedSegmentIndex {
-        case 0:
-            segmentCallback?(0)
-        case 1:
-            segmentCallback?(1)
-        default:
-            return
-        }
-    }
 }
+
+//MARK: Setup collection
 
 extension MovieHeaderView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

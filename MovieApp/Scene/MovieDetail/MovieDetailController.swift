@@ -37,7 +37,7 @@ class MovieDetailController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = false
         view.addSubview(collection)
         collection.frame = view.bounds
@@ -46,12 +46,27 @@ class MovieDetailController: UIViewController {
     private func configureViewModel() {
         viewModel.getMovieDetail()
         viewModel.getSimilarMovies()
+        viewModel.getVideos()
         viewModel.success = { [weak self] in
             self?.collection.reloadData()
         }
         viewModel.errorHandler = { error in
             print(error)
         }
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Trailer", image: UIImage(systemName: "play"), target: self, action: #selector(watchTrailer))
+    }
+    
+    @objc private func watchTrailer() {
+        let vc = TrailerController()
+        guard let key = viewModel.video.filter({$0.type == "Trailer"}).first?.key
+        else {
+            let alert = UIAlertController(title: "Error", message: "Trailer not found...", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            present(alert, animated: true)
+            return
+        }
+        vc.videoKey = key
+        navigationController?.show(vc, sender: nil)
     }
 }
 

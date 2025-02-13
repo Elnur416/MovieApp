@@ -9,6 +9,10 @@ import UIKit
 
 class ActorHeaderView: UICollectionReusableView {
     
+    private var department: String?
+    
+//    MARK: UI elements
+    
     private lazy var actorImage: UIImageView = {
         let i = UIImageView()
         i.backgroundColor = .gray
@@ -37,6 +41,19 @@ class ActorHeaderView: UICollectionReusableView {
         l.numberOfLines = 0
         l.translatesAutoresizingMaskIntoConstraints = false
         return l
+    }()
+    
+    private lazy var genreCollection: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.sectionInset = .init(top: 0, left: 0, bottom: 0, right: 0)
+        let c = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        c.dataSource = self
+        c.delegate = self
+        c.showsHorizontalScrollIndicator = false
+        c.register(GenreCell.self, forCellWithReuseIdentifier: "\(GenreCell.self)")
+        c.translatesAutoresizingMaskIntoConstraints = false
+        return c
     }()
     
     private lazy var aboutActor: UILabel = {
@@ -68,6 +85,8 @@ class ActorHeaderView: UICollectionReusableView {
         return l
     }()
     
+//    MARK: - Life cycle
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -83,6 +102,7 @@ class ActorHeaderView: UICollectionReusableView {
         [actorImage,
          actorName,
          placeLabel,
+         genreCollection,
          aboutActor,
          biography,
          knownLabel].forEach { addSubview($0) }
@@ -103,6 +123,11 @@ class ActorHeaderView: UICollectionReusableView {
             placeLabel.leadingAnchor.constraint(equalTo: actorImage.trailingAnchor, constant: 32),
             placeLabel.trailingAnchor.constraint(equalTo: actorName.trailingAnchor),
             
+            genreCollection.topAnchor.constraint(equalTo: placeLabel.bottomAnchor, constant: 16),
+            genreCollection.leadingAnchor.constraint(equalTo: actorName.leadingAnchor),
+            genreCollection.trailingAnchor.constraint(equalTo: actorName.trailingAnchor),
+            genreCollection.heightAnchor.constraint(equalToConstant: 30),
+            
             aboutActor.topAnchor.constraint(equalTo: actorImage.bottomAnchor, constant: 24),
             aboutActor.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
             aboutActor.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -28),
@@ -117,10 +142,32 @@ class ActorHeaderView: UICollectionReusableView {
         ])
     }
     
+//    MARK: - Configure
+    
     func configure(model: ActorDetail) {
         actorImage.loadImage(url: model.profilePath ?? "")
         actorName.text = model.name
         placeLabel.text = model.placeOfBirth
         biography.text = model.biography
+        self.department = model.knownForDepartment
+        genreCollection.reloadData()
+    }
+}
+
+//MARK: - Setup collection
+
+extension ActorHeaderView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(GenreCell.self)", for: indexPath) as! GenreCell
+        cell.configure(genre: department ?? "")
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        .init(width: collectionView.frame.width/2, height: 30)
     }
 }
