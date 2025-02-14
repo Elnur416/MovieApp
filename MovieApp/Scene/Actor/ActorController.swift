@@ -13,6 +13,12 @@ class ActorController: UIViewController {
     
 //    MARK: UI elements
     
+    private lazy var refreshControl: UIRefreshControl = {
+        let rc = UIRefreshControl()
+        rc.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        return rc
+    }()
+    
     private lazy var collection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -40,6 +46,7 @@ class ActorController: UIViewController {
         view.backgroundColor = .white
         view.addSubview(collection)
         collection.frame = view.bounds
+        collection.refreshControl = refreshControl
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "Actors"
     }
@@ -54,6 +61,12 @@ class ActorController: UIViewController {
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
             self.present(alert, animated: true)
         }
+    }
+    
+    @objc private func refreshData() {
+        self.viewModel.fetchActors()
+        self.collection.reloadData()
+        self.collection.refreshControl?.endRefreshing()
     }
 }
 

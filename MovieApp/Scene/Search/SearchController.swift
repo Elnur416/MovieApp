@@ -16,6 +16,12 @@ class SearchController: UIViewController {
     
 //    MARK:  - UI elements
     
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        return refreshControl
+    }()
+    
     private lazy var segmentControl: UISegmentedControl = {
         let view = UISegmentedControl(items: self.items)
         view.selectedSegmentIndex = 0
@@ -84,6 +90,7 @@ class SearchController: UIViewController {
         [segmentControl,
          searchView,
          table].forEach { view.addSubview($0) }
+        table.refreshControl = refreshControl
         searchView.addSubview(searchField)
     }
     
@@ -141,6 +148,11 @@ class SearchController: UIViewController {
         default:
             return
         }
+    }
+    
+    @objc private func refreshData() {
+        self.table.reloadData()
+        self.table.refreshControl?.endRefreshing()
     }
 }
 

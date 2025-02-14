@@ -13,6 +13,12 @@ class SeeAllController: UIViewController {
     
 //    MARK: Setup UI elements
     
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        return refreshControl
+    }()
+    
     private lazy var collection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -39,7 +45,13 @@ class SeeAllController: UIViewController {
         view.backgroundColor = .white
         view.addSubview(collection)
         collection.frame = view.bounds
+        collection.refreshControl = refreshControl
         title = viewModel.selectedTitle
+    }
+    
+    @objc private func refreshData() {
+        self.collection.reloadData()
+        self.collection.refreshControl?.endRefreshing()
     }
 }
 
