@@ -20,8 +20,8 @@ class ActorManager: ActorManagerUseCase {
     func searchActor() {
     }
     
-    func getActorList(completion: @escaping ((Actor?, String?) -> Void)) {
-        let path = ActorEndpoint.actor.path
+    func getActorList(page: Int, completion: @escaping ((Actor?, String?) -> Void)) {
+        let path = ActorEndpoint.actor(page: page).path
         manager.request(path: path,
                         model: Actor.self,
                         completion: completion)

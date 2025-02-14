@@ -55,18 +55,19 @@ class ActorController: UIViewController {
         viewModel.fetchActors()
         viewModel.completion = {
             self.collection.reloadData()
+            self.collection.refreshControl?.endRefreshing()
         }
         viewModel.errorHandler = { error in
             let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
             self.present(alert, animated: true)
+            self.collection.refreshControl?.endRefreshing()
         }
     }
     
     @objc private func refreshData() {
+        self.viewModel.reset()
         self.viewModel.fetchActors()
-        self.collection.reloadData()
-        self.collection.refreshControl?.endRefreshing()
     }
 }
 
@@ -91,5 +92,9 @@ extension ActorController: UICollectionViewDataSource, UICollectionViewDelegate,
         let vc = ActorDetailController()
         vc.viewModel.actorId = viewModel.actors[indexPath.row].id
         navigationController?.show(vc, sender: nil)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        viewModel.pagination(index: indexPath.item)
     }
 }
