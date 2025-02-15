@@ -84,7 +84,7 @@ class SearchController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "Search"
         [segmentControl,
@@ -98,7 +98,6 @@ class SearchController: UIViewController {
         NSLayoutConstraint.activate([
             segmentControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12),
             segmentControl.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.92),
-            //            segmentControl.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 30),
             segmentControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             searchView.topAnchor.constraint(equalTo: segmentControl.bottomAnchor, constant: 16),
@@ -124,8 +123,10 @@ class SearchController: UIViewController {
         viewModel.success = {
             self.table.reloadData()
         }
-        viewModel.errorHandler = { error in
-            print(error)
+        viewModel.errorHandler = { [weak self] error in
+            let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            self?.present(alert, animated: true)
         }
     }
     

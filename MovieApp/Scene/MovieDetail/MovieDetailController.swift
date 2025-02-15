@@ -50,8 +50,10 @@ class MovieDetailController: UIViewController {
         viewModel.success = { [weak self] in
             self?.collection.reloadData()
         }
-        viewModel.errorHandler = { error in
-            print(error)
+        viewModel.errorHandler = { [weak self] error in
+            let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            self?.present(alert, animated: true)
         }
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Trailer", image: UIImage(systemName: "play"), target: self, action: #selector(watchTrailer))
     }
@@ -100,9 +102,9 @@ extension MovieDetailController: UICollectionViewDataSource, UICollectionViewDel
         if let data = viewModel.data {
             header.configure(model: data)
         }
-        header.segmentCallback = { segmentIndex in
-            self.viewModel.segmentIndex = segmentIndex
-            self.collection.reloadData()
+        header.segmentCallback = { [weak self] segmentIndex in
+            self?.viewModel.segmentIndex = segmentIndex
+            self?.collection.reloadData()
         }
         return header
     }

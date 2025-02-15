@@ -37,7 +37,7 @@ class CollectionController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = false
         view.addSubview(collection)
         collection.frame = view.bounds
@@ -49,7 +49,9 @@ class CollectionController: UIViewController {
             self.collection.reloadData()
         }
         viewModel.errorHandler = { [weak self] error in
-            print(error)
+            let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            self?.present(alert, animated: true)
         }
     }
 }

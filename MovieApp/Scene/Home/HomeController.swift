@@ -48,9 +48,10 @@ class HomeController: UIViewController {
         viewModel.completion = {
             self.collection.reloadData()
         }
-        viewModel.errorHandler = { error in
+        viewModel.errorHandler = { [weak self] error in
             let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            self?.present(alert, animated: true)
         }
     }
 }

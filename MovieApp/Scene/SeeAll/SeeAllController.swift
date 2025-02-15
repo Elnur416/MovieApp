@@ -42,7 +42,7 @@ class SeeAllController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         view.addSubview(collection)
         collection.frame = view.bounds
         collection.refreshControl = refreshControl

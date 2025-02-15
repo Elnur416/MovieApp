@@ -28,14 +28,12 @@ class ActorHeaderView: UICollectionReusableView {
         l.textColor = .black
         l.numberOfLines = 0
         l.textAlignment = .left
-        l.text = "Atqkhd akehfake"
         l.translatesAutoresizingMaskIntoConstraints = false
         return l
     }()
     
     private lazy var placeLabel: UILabel = {
         let l = UILabel()
-        l.text = "London, England, UK"
         l.font = .systemFont(ofSize: 17, weight: .regular)
         l.textColor = UIColor(named: "mainColour")
         l.numberOfLines = 0

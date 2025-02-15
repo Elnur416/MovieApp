@@ -43,7 +43,7 @@ class ActorController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         view.addSubview(collection)
         collection.frame = view.bounds
         collection.refreshControl = refreshControl
@@ -57,11 +57,11 @@ class ActorController: UIViewController {
             self.collection.reloadData()
             self.collection.refreshControl?.endRefreshing()
         }
-        viewModel.errorHandler = { error in
+        viewModel.errorHandler = { [weak self] error in
             let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-            self.present(alert, animated: true)
-            self.collection.refreshControl?.endRefreshing()
+            self?.present(alert, animated: true)
+            self?.collection.refreshControl?.endRefreshing()
         }
     }
     

@@ -31,7 +31,7 @@ class TrailerController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         view.addSubview(webView)
         webView.load(withVideoId: videoKey ?? "")
     }
