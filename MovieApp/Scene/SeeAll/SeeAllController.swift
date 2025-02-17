@@ -39,6 +39,7 @@ class SeeAllController: UIViewController {
         super.viewDidLoad()
 
         setupUI()
+        configureViewModel()
     }
     
     private func setupUI() {
@@ -49,9 +50,23 @@ class SeeAllController: UIViewController {
         title = viewModel.selectedTitle
     }
     
+    private func configureViewModel() {
+        viewModel.completion = { [weak self] in
+            self?.collection.reloadData()
+            self?.collection.refreshControl?.endRefreshing()
+        }
+        viewModel.errorHandler = { [weak self] error in
+            let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            self?.present(alert, animated: true)
+            self?.collection.refreshControl?.endRefreshing()
+        }
+        viewModel.getMovies()
+    }
+    
     @objc private func refreshData() {
-        self.collection.reloadData()
-        self.collection.refreshControl?.endRefreshing()
+        self.viewModel.reset()
+        self.viewModel.getMovies()
     }
 }
 
@@ -59,12 +74,12 @@ class SeeAllController: UIViewController {
 
 extension SeeAllController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.selectedMovies.count
+        viewModel.movieItems.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(ImageLabelCell.self)", for: indexPath) as! ImageLabelCell
-        let model = viewModel.selectedMovies[indexPath.row]
+        let model = viewModel.movieItems[indexPath.row]
         cell.configure(data: model)
         return cell
     }
@@ -75,7 +90,11 @@ extension SeeAllController: UICollectionViewDataSource, UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = MovieDetailController()
-        vc.viewModel.movieId = viewModel.selectedMovies[indexPath.row].id
+        vc.viewModel.movieId = viewModel.movieItems[indexPath.row].id
         navigationController?.show(vc, sender: nil)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        viewModel.pagination(index: indexPath.item)
     }
 }

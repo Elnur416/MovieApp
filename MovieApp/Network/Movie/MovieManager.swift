@@ -13,8 +13,8 @@ class MovieManager: MovieManagerUseCase {
     func searchMovies() {
     }
     
-    func getMovieList(endpoint: MovieEndpoint, completion: @escaping ((Movie?, String?) -> Void)) {
-        let path = endpoint.path
+    func getMovieList(page: Int, endpoint: MovieEndpoint, completion: @escaping ((Movie?, String?) -> Void)) {
+        let path = endpoint.path + "\(page)"
         manager.request(path: path,
                         model: Movie.self,
                         completion: completion)

@@ -8,10 +8,10 @@
 import Foundation
 
 enum MovieEndpoint: String {
-    case nowPlaying = "movie/now_playing"
-    case popular = "movie/popular"
-    case topRated = "movie/top_rated"
-    case upcoming = "movie/upcoming"
+    case nowPlaying = "movie/now_playing?page="
+    case popular = "movie/popular?page="
+    case topRated = "movie/top_rated?page="
+    case upcoming = "movie/upcoming?page="
     
     var path: String {
         NetworkHelper.shared.configureURL(endpoint: self.rawValue)

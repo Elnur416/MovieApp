@@ -120,13 +120,15 @@ class SearchController: UIViewController {
     
     private func configureViewModel() {
         viewModel.getGenres()
-        viewModel.success = {
-            self.table.reloadData()
+        viewModel.success = { [weak self] in
+            self?.table.reloadData()
+            self?.table.refreshControl?.endRefreshing()
         }
         viewModel.errorHandler = { [weak self] error in
             let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
             self?.present(alert, animated: true)
+            self?.table.refreshControl?.endRefreshing()
         }
     }
     
@@ -152,8 +154,7 @@ class SearchController: UIViewController {
     }
     
     @objc private func refreshData() {
-        self.table.reloadData()
-        self.table.refreshControl?.endRefreshing()
+        self.searchTextDidChange()
     }
 }
 

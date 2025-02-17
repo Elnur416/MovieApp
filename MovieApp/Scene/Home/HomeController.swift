@@ -69,7 +69,6 @@ extension HomeController: UICollectionViewDataSource, UICollectionViewDelegate, 
         cell.configure(text: model.title, data: model.items)
         cell.seeAllCallback = {
             let vc = SeeAllController()
-            vc.viewModel.selectedMovies = self.viewModel.movieItems[indexPath.row].items
             vc.viewModel.selectedTitle = self.viewModel.movieItems[indexPath.row].title
             self.navigationController?.show(vc, sender: nil)
         }

@@ -26,7 +26,7 @@ class HomeViewModel {
     }
     
     private func fetchData(title: String, endpoint: MovieEndpoint) {
-        manager.getMovieList(endpoint: endpoint) { data, error in
+        manager.getMovieList(page: 1, endpoint: endpoint) { data, error in
             if let data {
                 self.movieItems.append(.init(title: title,
                                              items: data.results ?? []))
