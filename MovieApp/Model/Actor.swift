@@ -22,6 +22,7 @@ struct Actor: Codable {
 
 // MARK: - ActorResult
 struct ActorResult: Codable, MovieCellProtocol {
+//    Main
     let adult: Bool?
     let gender, id: Int?
     let knownForDepartment: String?
@@ -30,6 +31,14 @@ struct ActorResult: Codable, MovieCellProtocol {
     let profilePath: String?
     let knownFor: [KnownFor]?
     
+//    ActorDetail
+    let alsoKnownAs: [String]?
+    let biography, birthday, deathday: String?
+    let homepage: String?
+    let imdbID: String?
+    let placeOfBirth: String?
+    
+//    Protocol
     var titleText: String {
         name ?? ""
     }
@@ -54,6 +63,10 @@ struct ActorResult: Codable, MovieCellProtocol {
         case popularity
         case profilePath = "profile_path"
         case knownFor = "known_for"
+        case alsoKnownAs = "also_known_as"
+        case biography, birthday, deathday, homepage
+        case imdbID = "imdb_id"
+        case placeOfBirth = "place_of_birth"
     }
 }
 

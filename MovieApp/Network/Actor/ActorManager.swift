@@ -10,10 +10,10 @@ import Foundation
 class ActorManager: ActorManagerUseCase {
     private let manager = NetworkManager()
     
-    func getActorDetails(actorId: Int, completion: @escaping ((ActorDetail?, String?) -> Void)) {
+    func getActorDetails(actorId: Int, completion: @escaping ((ActorResult?, String?) -> Void)) {
         let path = ActorEndpoint.detail(id: actorId).path
         manager.request(path: path,
-                        model: ActorDetail.self,
+                        model: ActorResult.self,
                         completion: completion)
     }
     

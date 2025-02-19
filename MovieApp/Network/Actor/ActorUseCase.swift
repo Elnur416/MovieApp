@@ -10,6 +10,6 @@ import Foundation
 protocol ActorManagerUseCase {
     func searchActor()
     func getActorList(page: Int, completion: @escaping((Actor?, String?) -> Void))
-    func getActorDetails(actorId: Int, completion: @escaping((ActorDetail?, String?) -> Void))
+    func getActorDetails(actorId: Int, completion: @escaping((ActorResult?, String?) -> Void))
     func getActorMovies(actorId: Int, completion: @escaping((ActorMovies?, String?) -> Void))
 }

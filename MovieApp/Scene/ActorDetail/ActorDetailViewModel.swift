@@ -8,7 +8,7 @@
 import Foundation
 
 class ActorDetailViewModel {
-    var actorData: ActorDetail?
+    var actorData: ActorResult?
     var actorMovies = [Cast]()
     var actorId: Int?
     private let manager = ActorManager()

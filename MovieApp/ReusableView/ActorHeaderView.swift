@@ -142,7 +142,7 @@ class ActorHeaderView: UICollectionReusableView {
     
 //    MARK: - Configure
     
-    func configure(model: ActorDetail) {
+    func configure(model: ActorResult) {
         actorImage.loadImage(url: model.profilePath ?? "")
         actorName.text = model.name
         placeLabel.text = model.placeOfBirth
