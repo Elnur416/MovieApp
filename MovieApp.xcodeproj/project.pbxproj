@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		640137482D5E63A6009E1892 /* YouTubeiOSPlayerHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 640137472D5E63A6009E1892 /* YouTubeiOSPlayerHelper */; };
 		64B91BDD2D4EA10800AF91BB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 64B91BDC2D4EA10800AF91BB /* Alamofire */; };
+		64C6A8802D67927900590D2A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 64C6A87F2D67927900590D2A /* FirebaseAuth */; };
+		64C6A8822D67927900590D2A /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 64C6A8812D67927900590D2A /* FirebaseCore */; };
+		64C6A8842D67927900590D2A /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 64C6A8832D67927900590D2A /* FirebaseCrashlytics */; };
+		64C6A8862D67927900590D2A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 64C6A8852D67927900590D2A /* FirebaseFirestore */; };
+		64C6A8882D67927900590D2A /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 64C6A8872D67927900590D2A /* FirebaseStorage */; };
 		64E658DD2D4F6AD000F3396E /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 64E658DC2D4F6AD000F3396E /* SDWebImage */; };
 		64E658DF2D4F6AD000F3396E /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 64E658DE2D4F6AD000F3396E /* SDWebImageMapKit */; };
 /* End PBXBuildFile section */
@@ -73,8 +78,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				64E658DD2D4F6AD000F3396E /* SDWebImage in Frameworks */,
+				64C6A8802D67927900590D2A /* FirebaseAuth in Frameworks */,
+				64C6A8882D67927900590D2A /* FirebaseStorage in Frameworks */,
 				64E658DF2D4F6AD000F3396E /* SDWebImageMapKit in Frameworks */,
+				64C6A8842D67927900590D2A /* FirebaseCrashlytics in Frameworks */,
 				64B91BDD2D4EA10800AF91BB /* Alamofire in Frameworks */,
+				64C6A8862D67927900590D2A /* FirebaseFirestore in Frameworks */,
+				64C6A8822D67927900590D2A /* FirebaseCore in Frameworks */,
 				640137482D5E63A6009E1892 /* YouTubeiOSPlayerHelper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -140,6 +150,11 @@
 				64E658DC2D4F6AD000F3396E /* SDWebImage */,
 				64E658DE2D4F6AD000F3396E /* SDWebImageMapKit */,
 				640137472D5E63A6009E1892 /* YouTubeiOSPlayerHelper */,
+				64C6A87F2D67927900590D2A /* FirebaseAuth */,
+				64C6A8812D67927900590D2A /* FirebaseCore */,
+				64C6A8832D67927900590D2A /* FirebaseCrashlytics */,
+				64C6A8852D67927900590D2A /* FirebaseFirestore */,
+				64C6A8872D67927900590D2A /* FirebaseStorage */,
 			);
 			productName = MovieApp;
 			productReference = 64B91B482D4E8AF400AF91BB /* MovieApp.app */;
@@ -227,6 +242,7 @@
 				64B91BDB2D4EA10800AF91BB /* XCRemoteSwiftPackageReference "Alamofire" */,
 				64E658DB2D4F6AD000F3396E /* XCRemoteSwiftPackageReference "SDWebImage" */,
 				640137462D5E63A6009E1892 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */,
+				64C6A87E2D67927900590D2A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 64B91B492D4E8AF400AF91BB /* Products */;
@@ -601,6 +617,14 @@
 				minimumVersion = 5.10.2;
 			};
 		};
+		64C6A87E2D67927900590D2A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.8.1;
+			};
+		};
 		64E658DB2D4F6AD000F3396E /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
@@ -621,6 +645,31 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 64B91BDB2D4EA10800AF91BB /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		64C6A87F2D67927900590D2A /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 64C6A87E2D67927900590D2A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		64C6A8812D67927900590D2A /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 64C6A87E2D67927900590D2A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		64C6A8832D67927900590D2A /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 64C6A87E2D67927900590D2A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		64C6A8852D67927900590D2A /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 64C6A87E2D67927900590D2A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		64C6A8872D67927900590D2A /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 64C6A87E2D67927900590D2A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
 		};
 		64E658DC2D4F6AD000F3396E /* SDWebImage */ = {
 			isa = XCSwiftPackageProductDependency;

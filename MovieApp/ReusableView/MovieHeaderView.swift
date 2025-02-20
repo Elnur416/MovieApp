@@ -29,6 +29,8 @@ class MovieHeaderView: UICollectionReusableView {
         i.backgroundColor = .gray
         i.layer.cornerRadius = 16
         i.clipsToBounds = true
+        i.layer.borderWidth = 1
+        i.layer.borderColor = UIColor.white.cgColor
         i.translatesAutoresizingMaskIntoConstraints = false
         return i
     }()
