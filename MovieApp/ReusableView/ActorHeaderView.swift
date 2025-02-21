@@ -25,7 +25,6 @@ class ActorHeaderView: UICollectionReusableView {
     private lazy var actorName: UILabel = {
         let l = UILabel()
         l.font = .systemFont(ofSize: 20, weight: .bold)
-        l.textColor = .black
         l.numberOfLines = 0
         l.textAlignment = .left
         l.translatesAutoresizingMaskIntoConstraints = false

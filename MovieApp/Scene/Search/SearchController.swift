@@ -46,8 +46,11 @@ class SearchController: UIViewController {
         txt.font = UIFont.systemFont(ofSize: 16)
         txt.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 60))
         txt.leftViewMode = .always
-        txt.placeholder = "Search for ..."
-        txt.tintColor = .black
+        txt.attributedPlaceholder = NSAttributedString(
+            string: "Search for ...",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray]
+        )
+        txt.textColor = .black
         let rightIcon = UIImageView(frame: CGRect(x: 10, y: 12.5, width: 24, height: 24))
         rightIcon.tintColor = .black
         rightIcon.image = UIImage(systemName: "magnifyingglass")

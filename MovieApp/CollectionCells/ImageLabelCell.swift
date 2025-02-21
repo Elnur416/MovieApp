@@ -13,7 +13,6 @@ class ImageLabelCell: UICollectionViewCell {
     
     private lazy var movieTitle: UILabel = {
         let l = UILabel()
-        l.textColor = .black
         l.font = .systemFont(ofSize: 16, weight: .regular)
         l.textAlignment = .left
         l.numberOfLines = 0

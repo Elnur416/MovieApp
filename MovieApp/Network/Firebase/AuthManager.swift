@@ -13,8 +13,6 @@ class AuthManager {
     
     private init() {}
     
-//    let currentUser: User? = Auth.auth().currentUser
-    
     func getCurrentUser() -> User? {
         return Auth.auth().currentUser
     }

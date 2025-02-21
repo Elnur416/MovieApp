@@ -38,7 +38,6 @@ class MovieHeaderView: UICollectionReusableView {
     private lazy var titleLabel: UILabel = {
         let l = UILabel()
         l.font = .systemFont(ofSize: 20, weight: .bold)
-        l.textColor = .black
         l.textAlignment = .left
         l.numberOfLines = 3
         l.translatesAutoresizingMaskIntoConstraints = false
@@ -188,7 +187,7 @@ class MovieHeaderView: UICollectionReusableView {
     }
     
     private func setupUI() {
-        backgroundColor = .white
+        backgroundColor = .systemBackground
         [backImage,
          posterImage,
          titleLabel,
