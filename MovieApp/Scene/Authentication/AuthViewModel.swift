@@ -8,27 +8,16 @@
 import Foundation
 
 class AuthViewModel {
+    var success: (() -> Void)?
+    var errorHandler: (() -> Void)?
+    
     func handleLogin(email: String, password: String) {
-        let auth = AuthManager.shared
-        auth.signIn(email: email,
-                    password: password) { result, error in
-            if let result {
-                print(result)
-            } else if let error {
-                print(error.localizedDescription)
-                self.createAccount(email: email, password: password)
-            }
-        }
-    }
-        
-    private func createAccount(email: String, password: String) {
-        let auth = AuthManager.shared
-        auth.createUser(email: email,
-                        password: password) { result, error in
-            if let result {
-                print(result)
-            } else if let error {
-                print(error.localizedDescription)
+        AuthManager.shared.enter(email: email,
+                                 password: password) { error in
+            if let error {
+                self.errorHandler?()
+            } else {
+                self.success?()
             }
         }
     }

@@ -55,6 +55,7 @@ class AuthController: UIViewController {
 
         setupUI()
         setupConstraints()
+        configureViewModel()
     }
     
     private func setupUI() {
@@ -78,6 +79,17 @@ class AuthController: UIViewController {
             return
         }
         viewModel.handleLogin(email: email, password: password)
+    }
+    
+    private func configureViewModel() {
+        viewModel.errorHandler = {
+            self.showAlert(title: "Error", message: "Invalid password or email")
+        }
+        viewModel.success = {
+            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
+            guard let sceneDelegate = windowScene.delegate as? SceneDelegate else { return }
+            sceneDelegate.tabRoot(windowScene: windowScene)
+        }
     }
     
     private func showAlert(title: String, message: String) {
