@@ -41,6 +41,7 @@ class MovieDetailController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = false
         view.addSubview(collection)
         collection.frame = view.bounds
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "bookmark"), style: .plain, target: self, action: #selector(addWishlist))
     }
     
     private func configureViewModel() {
@@ -55,22 +56,21 @@ class MovieDetailController: UIViewController {
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
             self?.present(alert, animated: true)
         }
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Trailer", image: UIImage(systemName: "play"), target: self, action: #selector(watchTrailer))
     }
     
-    @objc private func watchTrailer() {
-        let vc = TrailerController()
-        guard let key = viewModel.video.filter({$0.type == "Trailer"}).first?.key
-        else {
-            let alert = UIAlertController(title: "Error", message: "Trailer not found...", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-            present(alert, animated: true)
-            return
+    @objc private func addWishlist() {
+        guard let movie = viewModel.data else { return }
+        FirestoreManager.shared.saveMovie(model: movie) { error in
+            if let error {
+                self.showAlert(message: error)
+            } else {
+                self.showAlert(title: "Success", message: "Added to wishlist")
+            }
         }
-        vc.videoKey = key
-        navigationController?.show(vc, sender: nil)
     }
 }
+
+//MARK: - Setup collection
 
 extension MovieDetailController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -105,6 +105,18 @@ extension MovieDetailController: UICollectionViewDataSource, UICollectionViewDel
         header.segmentCallback = { [weak self] segmentIndex in
             self?.viewModel.segmentIndex = segmentIndex
             self?.collection.reloadData()
+        }
+        header.videoCallback = {
+            let vc = TrailerController()
+            guard let key = self.viewModel.video.filter({$0.type == "Trailer"}).first?.key
+            else {
+                let alert = UIAlertController(title: "Error", message: "Trailer not found...", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+                self.present(alert, animated: true)
+                return
+            }
+            vc.videoKey = key
+            self.navigationController?.show(vc, sender: nil)
         }
         return header
     }

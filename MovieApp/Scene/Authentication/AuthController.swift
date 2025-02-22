@@ -75,26 +75,20 @@ class AuthController: UIViewController {
         guard let email = emailField.text, !email.isEmpty,
               let password = passwordField.text, !password.isEmpty
         else {
-            showAlert(title: "Error", message: "Email and password fields must not be empty")
+            self.showAlert(title: "Error", message: "Email and password fields must not be empty")
             return
         }
         viewModel.handleLogin(email: email, password: password)
     }
     
     private func configureViewModel() {
-        viewModel.errorHandler = {
-            self.showAlert(title: "Error", message: "Invalid password or email")
+        viewModel.errorHandler = { [weak self] error in
+            self?.showAlert(title: "Error", message: error)
         }
         viewModel.success = {
             guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
             guard let sceneDelegate = windowScene.delegate as? SceneDelegate else { return }
             sceneDelegate.tabRoot(windowScene: windowScene)
         }
-    }
-    
-    private func showAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        present(alert, animated: true)
     }
 }

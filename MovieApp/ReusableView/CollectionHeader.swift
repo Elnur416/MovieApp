@@ -30,7 +30,6 @@ class CollectionHeader: UICollectionReusableView {
     private lazy var titleLabel: UILabel = {
         let l = UILabel()
         l.font = .systemFont(ofSize: 20, weight: .bold)
-        l.textColor = .black
         l.textAlignment = .center
         l.numberOfLines = 3
         l.translatesAutoresizingMaskIntoConstraints = false

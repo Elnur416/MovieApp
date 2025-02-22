@@ -13,9 +13,11 @@ class MovieHeaderView: UICollectionReusableView {
     
     private var movieGenres = [GenreElement]()
     private var items = ["Similar Movies", "Collection"]
+    private var videoKey: String?
     var segmentCallback: ((Int) -> Void)?
+    var videoCallback: (() -> Void)?
     
-    //    MARK: - Setup UI elements
+//    MARK: - Setup UI elements
     
     private lazy var backImage: UIImageView = {
         let i = UIImageView()
@@ -33,6 +35,16 @@ class MovieHeaderView: UICollectionReusableView {
         i.layer.borderColor = UIColor.white.cgColor
         i.translatesAutoresizingMaskIntoConstraints = false
         return i
+    }()
+    
+    private lazy var playImage: UIImageView = {
+        let iv = UIImageView(image: UIImage(systemName: "play"))
+        iv.contentMode = .scaleAspectFit
+        iv.tintColor = UIColor(named: "starColour")
+        iv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(watchTrailer)))
+        iv.isUserInteractionEnabled = true
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        return iv
     }()
     
     private lazy var titleLabel: UILabel = {
@@ -190,6 +202,7 @@ class MovieHeaderView: UICollectionReusableView {
         backgroundColor = .systemBackground
         [backImage,
          posterImage,
+         playImage,
          titleLabel,
          stack,
          genreCollection,
@@ -217,6 +230,11 @@ class MovieHeaderView: UICollectionReusableView {
             posterImage.heightAnchor.constraint(equalToConstant: 150),
             posterImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
             posterImage.topAnchor.constraint(equalTo: topAnchor, constant: 130),
+            
+            playImage.centerXAnchor.constraint(equalTo: backImage.centerXAnchor),
+            playImage.centerYAnchor.constraint(equalTo: backImage.centerYAnchor),
+            playImage.heightAnchor.constraint(equalToConstant: 60),
+            playImage.widthAnchor.constraint(equalToConstant: 60),
             
             titleLabel.topAnchor.constraint(equalTo: backImage.bottomAnchor, constant: 12),
             titleLabel.leadingAnchor.constraint(equalTo: posterImage.trailingAnchor, constant: 12),
@@ -296,6 +314,10 @@ class MovieHeaderView: UICollectionReusableView {
         
         movieGenres = model.genres ?? []
         genreCollection.reloadData()
+    }
+    
+    @objc private func watchTrailer() {
+        videoCallback?()
     }
 }
 
