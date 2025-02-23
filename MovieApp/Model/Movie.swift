@@ -59,6 +59,18 @@ struct MovieResult: Codable, MovieCellProtocol {
     var departmentText: String {
         ""
     }
+    
+    var cellVoteAverage: Double {
+        voteAverage ?? 0
+    }
+    
+    var cellReleaseDate: String {
+        "\(releaseDate?.prefix(4) ?? "")"
+    }
+    
+    var cellGenres: [Int] {
+        genreIDS ?? []
+    }
 
     enum CodingKeys: String, CodingKey {
         case adult

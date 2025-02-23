@@ -145,16 +145,16 @@ class MovieCell: UITableViewCell {
     
 //    MARK: - Configure
     
-    func configure(model: MovieResult) {
-        movieName.text = model.title
-        movieImage.loadImage(url: model.posterPath ?? "")
+    func configure(model: MovieCellProtocol) {
+        movieName.text = model.titleText
+        movieImage.loadImage(url: model.imageURL)
         
-        let value = model.voteAverage ?? 0
+        let value = model.cellVoteAverage
         let formattedValue = String(format: "%.1f", value)
         imdbRating.text = "\(formattedValue) / 10"
         
-        releaseDate.text = model.formattedDate
-        movieGenres = GenreHandler.shared.getGenreName(id: model.genreIDS ?? [])
+        releaseDate.text = model.cellReleaseDate
+        movieGenres = GenreHandler.shared.getGenreName(id: model.cellGenres)
         collection.reloadData()
     }
 }

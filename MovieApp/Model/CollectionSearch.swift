@@ -44,6 +44,18 @@ struct Result: Codable, MovieCellProtocol {
     var departmentText: String {
         ""
     }
+    
+    var cellVoteAverage: Double {
+        0
+    }
+    
+    var cellReleaseDate: String {
+        ""
+    }
+    
+    var cellGenres: [Int] {
+        []
+    }
 
 
     enum CodingKeys: String, CodingKey {

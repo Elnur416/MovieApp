@@ -49,6 +49,18 @@ struct Cast: Codable, MovieCellProtocol {
         ""
     }
     
+    var cellVoteAverage: Double {
+        0
+    }
+    
+    var cellReleaseDate: String {
+        ""
+    }
+    
+    var cellGenres: [Int] {
+        []
+    }
+    
     
     enum CodingKeys: String, CodingKey {
         case adult

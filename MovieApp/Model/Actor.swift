@@ -54,6 +54,19 @@ struct ActorResult: Codable, MovieCellProtocol {
     var departmentText: String {
         knownForDepartment ?? ""
     }
+    
+    var cellVoteAverage: Double {
+        0
+    }
+    
+    var cellReleaseDate: String {
+        ""
+    }
+    
+    var cellGenres: [Int] {
+        []
+    }
+    
 
     enum CodingKeys: String, CodingKey {
         case adult, gender, id

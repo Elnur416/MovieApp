@@ -59,7 +59,13 @@ class MovieDetailController: UIViewController {
     }
     
     @objc private func addWishlist() {
-        guard let movie = viewModel.data else { return }
+        guard let button = navigationItem.rightBarButtonItem else { return }
+        
+        let isFilled = button.image == UIImage(systemName: "bookmark.fill")
+        button.image = UIImage(systemName: isFilled ? "bookmark" : "bookmark.fill")
+        
+        guard let movie = viewModel.data, !isFilled else { return }
+        
         FirestoreManager.shared.saveMovie(model: movie) { error in
             if let error {
                 self.showAlert(message: error)

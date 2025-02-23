@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - MovieDetail
-struct MovieDetail: Codable {
+struct MovieDetail: Codable, MovieCellProtocol {
     let adult: Bool?
     let backdropPath: String?
     let belongsToCollection: BelongsToCollection?
@@ -32,6 +32,34 @@ struct MovieDetail: Codable {
     let voteCount: Int?
     
     var formattedDate: String {
+        "\(releaseDate?.prefix(4) ?? "")"
+    }
+    
+    var titleText: String {
+        "\(title ?? "") (\(releaseDate?.prefix(4) ?? ""))"
+    }
+    
+    var imageURL: String {
+        posterPath ?? ""
+    }
+    
+    var overviewText: String {
+        ""
+    }
+    
+    var departmentText: String {
+        ""
+    }
+    
+    var cellGenres: [Int] {
+        genres?.compactMap { $0.id } ?? []
+    }
+    
+    var cellVoteAverage: Double {
+        voteAverage ?? 0
+    }
+    
+    var cellReleaseDate: String {
         "\(releaseDate?.prefix(4) ?? "")"
     }
 
@@ -59,6 +87,21 @@ struct MovieDetail: Codable {
 
 // MARK: - BelongsToCollection
 struct BelongsToCollection: Codable, MovieCellProtocol {
+    let id: Int?
+    let name, posterPath, backdropPath: String?
+    
+    var cellVoteAverage: Double {
+        0
+    }
+    
+    var cellReleaseDate: String {
+        ""
+    }
+    
+    var cellGenres: [Int] {
+        []
+    }
+    
     var titleText: String {
         name ?? ""
     }
@@ -75,8 +118,6 @@ struct BelongsToCollection: Codable, MovieCellProtocol {
         ""
     }
     
-    let id: Int?
-    let name, posterPath, backdropPath: String?
 
     enum CodingKeys: String, CodingKey {
         case id, name
