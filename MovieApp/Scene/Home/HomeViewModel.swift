@@ -15,6 +15,8 @@ struct HomeModel {
 class HomeViewModel {
     var movieItems = [HomeModel]()
     private let manager = MovieManager()
+    private let genreManager = GenreManager()
+    private var genres = [GenreElement]()
     var completion: (() -> Void)?
     var errorHandler: ((String) -> Void)?
     
@@ -30,6 +32,18 @@ class HomeViewModel {
             if let data {
                 self.movieItems.append(.init(title: title,
                                              items: data.results ?? []))
+                self.completion?()
+            } else if let error {
+                self.errorHandler?(error)
+            }
+        }
+    }
+    
+    func getGenres() {
+        genreManager.getGenres { data, error in
+            if let data {
+                self.genres = data.genres ?? []
+                GenreHandler.shared.setItems(data: data.genres ?? [])
                 self.completion?()
             } else if let error {
                 self.errorHandler?(error)

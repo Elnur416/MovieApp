@@ -122,7 +122,6 @@ class SearchController: UIViewController {
     }
     
     private func configureViewModel() {
-        viewModel.getGenres()
         viewModel.success = { [weak self] in
             self?.table.reloadData()
             self?.table.refreshControl?.endRefreshing()

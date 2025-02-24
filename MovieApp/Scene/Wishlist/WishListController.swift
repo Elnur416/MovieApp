@@ -13,6 +13,12 @@ class WishListController: UIViewController {
     
 //    MARK: UI elements
     
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        return refreshControl
+    }()
+    
     private lazy var table: UITableView = {
         let t = UITableView()
         t.dataSource = self
@@ -33,20 +39,31 @@ class WishListController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .systemBackground
+        navigationController?.navigationBar.prefersLargeTitles = true
         view.addSubview(table)
+        table.refreshControl = refreshControl
+        title = "Wishlist"
         table.frame = view.bounds
     }
     
     private func configureViewModel() {
         viewModel.success = { [weak self] in
             self?.table.reloadData()
+            self?.table.refreshControl?.endRefreshing()
         }
         viewModel.errorHandler = { [weak self] error in
             self?.showAlert(message: error)
+            self?.table.refreshControl?.endRefreshing()
         }
         viewModel.getMovies()
     }
+    
+    @objc private func refreshData() {
+        self.viewModel.getMovies()
+    }
 }
+
+//MARK: - Setup TableView
 
 extension WishListController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -61,5 +78,13 @@ extension WishListController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            FirestoreManager.shared.deleteDocument(movieID: viewModel.movies[indexPath.item].id ?? 0)
+            viewModel.movies.remove(at: indexPath.item)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
     }
 }

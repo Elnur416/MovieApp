@@ -45,6 +45,7 @@ class HomeController: UIViewController {
     
     private func configureViewModel() {
         viewModel.getAllData()
+        viewModel.getGenres()
         viewModel.completion = {
             self.collection.reloadData()
         }

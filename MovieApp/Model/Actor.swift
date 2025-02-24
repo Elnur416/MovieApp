@@ -43,6 +43,14 @@ struct ActorResult: Codable, MovieCellProtocol {
         name ?? ""
     }
     
+    var formattedDate: String {
+        ""
+    }
+    
+    var cellTitle: String {
+        name ?? ""
+    }
+    
     var imageURL: String {
         profilePath ?? ""
     }
@@ -65,6 +73,10 @@ struct ActorResult: Codable, MovieCellProtocol {
     
     var cellGenres: [Int] {
         []
+    }
+    
+    var cellPosterURL: String {
+        ""
     }
     
 

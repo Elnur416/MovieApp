@@ -39,6 +39,10 @@ struct MovieDetail: Codable, MovieCellProtocol {
         "\(title ?? "") (\(releaseDate?.prefix(4) ?? ""))"
     }
     
+    var cellTitle: String {
+        title ?? ""
+    }
+    
     var imageURL: String {
         posterPath ?? ""
     }
@@ -61,6 +65,10 @@ struct MovieDetail: Codable, MovieCellProtocol {
     
     var cellReleaseDate: String {
         "\(releaseDate?.prefix(4) ?? "")"
+    }
+    
+    var cellPosterURL: String {
+        posterPath ?? ""
     }
 
     enum CodingKeys: String, CodingKey {
@@ -94,12 +102,24 @@ struct BelongsToCollection: Codable, MovieCellProtocol {
         0
     }
     
+    var cellTitle: String {
+        ""
+    }
+    
+    var cellPosterURL: String {
+        posterPath ?? ""
+    }
+    
     var cellReleaseDate: String {
         ""
     }
     
     var cellGenres: [Int] {
         []
+    }
+    
+    var formattedDate: String {
+        ""
     }
     
     var titleText: String {

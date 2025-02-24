@@ -69,8 +69,6 @@ class MovieDetailController: UIViewController {
         FirestoreManager.shared.saveMovie(model: movie) { error in
             if let error {
                 self.showAlert(message: error)
-            } else {
-                self.showAlert(title: "Success", message: "Added to wishlist")
             }
         }
     }

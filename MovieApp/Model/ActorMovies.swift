@@ -37,7 +37,15 @@ struct Cast: Codable, MovieCellProtocol {
         ""
     }
     
+    var formattedDate: String {
+        ""
+    }
+    
     var titleText: String {
+        "\(title ?? "") (\(releaseDate?.prefix(4) ?? ""))"
+    }
+    
+    var cellTitle: String {
         "\(title ?? "") (\(releaseDate?.prefix(4) ?? ""))"
     }
     
@@ -59,6 +67,10 @@ struct Cast: Codable, MovieCellProtocol {
     
     var cellGenres: [Int] {
         []
+    }
+    
+    var cellPosterURL: String {
+        ""
     }
     
     
