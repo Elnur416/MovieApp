@@ -10,12 +10,16 @@ import Foundation
 class ActorViewModel {
     private var actor: Actor?
     var actors = [ActorResult]()
-    private let manager = ActorManager()
+    let useCase: ActorManagerUseCase
     var completion: (() -> Void)?
     var errorHandler: ((String) -> Void)?
     
+    init(useCase: ActorManagerUseCase) {
+        self.useCase = useCase
+    }
+    
     func fetchActors() {
-        manager.getActorList(page: (actor?.page ?? 0) + 1) { data, error in
+        useCase.getActorList(page: (actor?.page ?? 0) + 1) { data, error in
             if let data {
                 self.actor = data
                 self.actors.append(contentsOf: data.results ?? [])

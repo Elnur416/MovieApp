@@ -16,9 +16,10 @@ class TabBarController: UITabBarController {
     }
     
     private func configureTabs() {
-        let vc1 = HomeController()
-        let vc2 = SearchController()
-        let vc3 = ActorController()
+        let vc1 = HomeController(viewModel: .init(useCase: MovieManager(),
+                                                  genreUseCase: GenreManager()))
+        let vc2 = SearchController(viewModel: .init(useCase: SearchManager()))
+        let vc3 = ActorController(viewModel: .init(useCase: ActorManager()))
         let vc4 = WishListController()
         
 //        Set Tab Images

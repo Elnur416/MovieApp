@@ -9,7 +9,16 @@ import UIKit
 
 class MovieDetailController: UIViewController {
     
-    let viewModel = MovieDetailViewModel()
+    let viewModel: MovieDetailViewModel
+    
+    init(viewModel: MovieDetailViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
 //    MARK: Setup UI elements
     
@@ -135,12 +144,10 @@ extension MovieDetailController: UICollectionViewDataSource, UICollectionViewDel
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if viewModel.segmentIndex == 0 {
-            let vc = MovieDetailController()
-            vc.viewModel.movieId = viewModel.similarMovies[indexPath.row].id
+            let vc = MovieDetailController(viewModel: .init(movieId: viewModel.movieId ?? 0))
             navigationController?.show(vc, sender: nil)
         } else {
-            let vc = CollectionController()
-            vc.viewModel.collectionID = viewModel.data?.belongsToCollection?.id
+            let vc = CollectionController(viewModel: .init(useCase: CollectionManager(), collectionID: viewModel.data?.belongsToCollection?.id ?? 0))
             navigationController?.show(vc, sender: nil)
         }
     }

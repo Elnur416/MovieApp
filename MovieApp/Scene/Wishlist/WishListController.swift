@@ -55,11 +55,12 @@ class WishListController: UIViewController {
             self?.showAlert(message: error)
             self?.table.refreshControl?.endRefreshing()
         }
-        viewModel.getMovies()
+        viewModel.getData()
     }
     
     @objc private func refreshData() {
-        self.viewModel.getMovies()
+        self.viewModel.reset()
+        self.viewModel.getData()
     }
 }
 

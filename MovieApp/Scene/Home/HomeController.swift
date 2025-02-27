@@ -9,7 +9,16 @@ import UIKit
 
 class HomeController: UIViewController {
     
-    private let viewModel = HomeViewModel()
+    private let viewModel: HomeViewModel
+    
+    init(viewModel: HomeViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
 //    MARK: setup UI elements
     
@@ -67,15 +76,14 @@ extension HomeController: UICollectionViewDataSource, UICollectionViewDelegate, 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(HomeCell.self)", for: indexPath) as! HomeCell
         let model = viewModel.movieItems[indexPath.row]
-        cell.configure(text: model.title, data: model.items)
+        cell.configure(text: model.title.type.rawValue, data: model.items)
         cell.seeAllCallback = {
-            let vc = SeeAllController()
-            vc.viewModel.selectedTitle = self.viewModel.movieItems[indexPath.row].title
+            let vc = SeeAllController(viewModel: .init(model: model,
+                                                       usecase: self.viewModel.useCase))
             self.navigationController?.show(vc, sender: nil)
         }
         cell.movieCallback = { id in
-            let vc = MovieDetailController()
-            vc.viewModel.movieId = id
+            let vc = MovieDetailController(viewModel: .init(movieId: id))
             self.navigationController?.show(vc, sender: nil)
         }
         return cell

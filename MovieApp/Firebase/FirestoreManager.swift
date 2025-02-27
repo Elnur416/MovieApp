@@ -34,40 +34,26 @@ class FirestoreManager {
         }
     }
     
-    func getMovies(count: Int, completion: @escaping(([String: Any]?, String?) -> Void)) {
+    func getDocument(completion: @escaping(([FirestoreModel]?, String?) -> Void)) {
         guard let collection = UserDefaults.standard.value(forKey: "userID") as? String else { return }
-        db.collection(collection).getDocuments { snapshot, error in
-            if let snapshot {
-                guard let data = snapshot.documents[count - 1].data() as? [String: Any] else { return }
-                completion(data, nil)
-            } else if let error {
+        db.collection(collection).getDocuments(completion: { data, error in
+            if let error {
                 completion(nil, error.localizedDescription)
-            }
-        }
-    }
-    
-    func getDocument(completion: @escaping(([String: Any]?, String?) -> Void)) {
-        guard let collection = UserDefaults.standard.value(forKey: "userID") as? String else { return }
-        db.collection(collection).getDocuments { snapshot, error in
-            if let snapshot {
-                let count = snapshot.documents.count
-                if count > 0 {
-                    for index in 1...count {
-                        self.getMovies(count: index) { data, error in
-                            if let data {
-                                completion(data, nil)
-                            } else if let error {
-                                completion(nil, error)
-                            }
-                        }
-                    }
-                } else {
-                    return
+            } else if let data = data {
+                let movies: [FirestoreModel] = data.documents.compactMap { doc in
+                    let data = doc.data()
+                    return FirestoreModel(
+                        posterPath: data["posterPath"] as? String,
+                        releaseDate: data["releaseDate"] as? String,
+                        title: data["title"] as? String,
+                        id: data["id"] as? Int,
+                        genres: data["genres"] as? [Int],
+                        voteAverage: data["voteAverage"] as? Double
+                    )
                 }
-            } else if let error {
-                completion(nil, error.localizedDescription)
+                completion(movies, nil)
             }
-        }
+        })
     }
     
     func deleteDocument(movieID: Int) {
@@ -75,4 +61,3 @@ class FirestoreManager {
         db.collection(collection).document("\(movieID)").delete()
     }
 }
-

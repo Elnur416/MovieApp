@@ -9,7 +9,16 @@ import UIKit
 
 class SeeAllController: UIViewController {
     
-    let viewModel = SeeAllViewModel()
+    let viewModel: SeeAllViewModel
+    
+    init(viewModel: SeeAllViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
 //    MARK: Setup UI elements
     
@@ -44,10 +53,11 @@ class SeeAllController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .systemBackground
+        navigationController?.navigationBar.prefersLargeTitles = true
         view.addSubview(collection)
         collection.frame = view.bounds
         collection.refreshControl = refreshControl
-        title = viewModel.selectedTitle
+        title = viewModel.model.title.type.rawValue
     }
     
     private func configureViewModel() {
@@ -61,12 +71,12 @@ class SeeAllController: UIViewController {
             self?.present(alert, animated: true)
             self?.collection.refreshControl?.endRefreshing()
         }
-        viewModel.getMovies()
+        viewModel.fetchData()
     }
     
     @objc private func refreshData() {
         self.viewModel.reset()
-        self.viewModel.getMovies()
+        self.viewModel.fetchData()
     }
 }
 
@@ -74,12 +84,12 @@ class SeeAllController: UIViewController {
 
 extension SeeAllController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.movieItems.count
+        viewModel.model.items.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(ImageLabelCell.self)", for: indexPath) as! ImageLabelCell
-        let model = viewModel.movieItems[indexPath.row]
+        let model = viewModel.model.items[indexPath.row]
         cell.configure(data: model)
         return cell
     }
@@ -89,8 +99,7 @@ extension SeeAllController: UICollectionViewDataSource, UICollectionViewDelegate
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = MovieDetailController()
-        vc.viewModel.movieId = viewModel.movieItems[indexPath.row].id
+        let vc = MovieDetailController(viewModel: .init(movieId: viewModel.model.items[indexPath.row].id ?? 0))
         navigationController?.show(vc, sender: nil)
     }
     

@@ -12,26 +12,18 @@ class WishlistViewModel {
     var success: (() -> Void)?
     var errorHandler: ((String) -> Void)?
     
-    func getMovies() {
+    func getData() {
         FirestoreManager.shared.getDocument { data, error in
-            if let data {
-                do {
-                    let jsonData = try JSONSerialization.data(withJSONObject: data)
-                    let decoder = JSONDecoder()
-                    decoder.keyDecodingStrategy = .convertFromSnakeCase
-                    let movie = try decoder.decode(FirestoreModel.self, from: jsonData)
-                    if self.movies.contains(where: { $0.id == movie.id }) {
-                        self.success?()
-                    } else {
-                        self.movies.append(movie)
-                        self.success?()
-                    }
-                } catch {
-                    self.errorHandler?(error.localizedDescription)
-                }
-            } else if let error {
+            if let error {
                 self.errorHandler?(error)
+            } else if let data {
+                self.movies = data
+                self.success?()
             }
         }
+    }
+    
+    func reset() {
+        movies.removeAll()
     }
 }

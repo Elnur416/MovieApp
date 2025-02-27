@@ -14,11 +14,15 @@ class MovieDetailViewModel {
     var collection: BelongsToCollection?
     var segmentIndex: Int? = 0
     var movieId: Int?
-    private let detailManager = MovieDetailManager()
-    private let similarManager = SimilarManager()
-    private let videoManager = VideoManager()
+    let detailManager = MovieDetailManager()
+    let similarManager = SimilarManager()
+    private let videoManager =  VideoManager()
     var success: (() -> Void)?
     var errorHandler: ((String) -> Void)?
+    
+    init(movieId: Int) {
+        self.movieId = movieId
+    }
     
     func getMovieDetail() {
         detailManager.getMovieDetail(id: self.movieId ?? 0) { data, error in

@@ -9,7 +9,16 @@ import UIKit
 
 class ActorController: UIViewController {
     
-    private let viewModel = ActorViewModel()
+    private let viewModel: ActorViewModel
+    
+    init(viewModel: ActorViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
 //    MARK: UI elements
     
@@ -89,8 +98,7 @@ extension ActorController: UICollectionViewDataSource, UICollectionViewDelegate,
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = ActorDetailController()
-        vc.viewModel.actorId = viewModel.actors[indexPath.row].id
+        let vc = ActorDetailController(viewModel: .init(actorId: viewModel.actors[indexPath.row].id ?? 0, useCase: viewModel.useCase))
         navigationController?.show(vc, sender: nil)
     }
     

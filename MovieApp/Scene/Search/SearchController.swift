@@ -11,8 +11,17 @@ class SearchController: UIViewController {
     
 //    MARK: Properties
     
-    private let viewModel = SearchViewModel()
+    private let viewModel: SearchViewModel
     private var items = ["Movies", "Actors", "Collections"]
+    
+    init(viewModel: SearchViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
 //    MARK:  - UI elements
     
@@ -93,7 +102,7 @@ class SearchController: UIViewController {
         [segmentControl,
          searchView,
          table].forEach { view.addSubview($0) }
-        table.refreshControl = refreshControl
+//        table.refreshControl = refreshControl
         searchView.addSubview(searchField)
     }
     
@@ -202,16 +211,13 @@ extension SearchController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch segmentControl.selectedSegmentIndex {
         case 0:
-            let vc = MovieDetailController()
-            vc.viewModel.movieId = viewModel.searchedMovies[indexPath.row].id
+            let vc = MovieDetailController(viewModel: .init(movieId: viewModel.searchedMovies[indexPath.row].id ?? 0))
             navigationController?.show(vc, sender: nil)
         case 1:
-            let vc = ActorDetailController()
-            vc.viewModel.actorId = viewModel.searchedActors[indexPath.row].id
+            let vc = ActorDetailController(viewModel: .init(actorId: viewModel.searchedActors[indexPath.row].id ?? 0, useCase: ActorManager()))
             navigationController?.show(vc, sender: nil)
         case 2:
-            let vc = CollectionController()
-            vc.viewModel.collectionID = viewModel.searchedCollections[indexPath.row].id
+            let vc = CollectionController(viewModel: .init(useCase: CollectionManager(), collectionID: viewModel.searchedCollections[indexPath.row].id ?? 0))
             navigationController?.show(vc, sender: nil)
         default:
             return

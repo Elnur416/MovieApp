@@ -8,16 +8,22 @@
 import Foundation
 
 class SearchViewModel {
+    private var movie: Movie?
     var searchedMovies = [MovieResult]()
     var searchedActors = [ActorResult]()
     var searchedCollections = [Result]()
     var success: (() -> Void)?
     var errorHandler: ((String) -> Void)?
-    private let manager = SearchManager()
+    private let useCase: SearchUseCase
+    
+    init(useCase: SearchUseCase) {
+        self.useCase = useCase
+    }
     
     func fetchMovies(query: String) {
-        manager.searchMovies(query: query) { data, error in
+        useCase.searchMovies(query: query) { data, error in
             if let data {
+                self.movie = data
                 self.searchedMovies = data.results ?? []
                 self.success?()
             } else if let error {
@@ -27,7 +33,7 @@ class SearchViewModel {
     }
     
     func fetchActors(query: String) {
-        manager.searchActors(query: query) { data, error in
+        useCase.searchActors(query: query) { data, error in
             if let data {
                 self.searchedActors = data.results ?? []
                 self.success?()
@@ -38,7 +44,7 @@ class SearchViewModel {
     }
     
     func fetchCollections(query: String) {
-        manager.searchCollections(query: query) { data, error in
+        useCase.searchCollections(query: query) { data, error in
             if let data {
                 self.searchedCollections = data.results ?? []
                 self.success?()

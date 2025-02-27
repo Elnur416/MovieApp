@@ -57,7 +57,7 @@ class AuthManager {
         }
     }
     
-    func singOut() {
+    func signOut() {
         do {
             try Auth.auth().signOut()
         } catch {

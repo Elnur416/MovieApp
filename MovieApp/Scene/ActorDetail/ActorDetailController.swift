@@ -9,7 +9,16 @@ import UIKit
 
 class ActorDetailController: UIViewController {
     
-    let viewModel = ActorDetailViewModel()
+    let viewModel: ActorDetailViewModel
+    
+    init(viewModel: ActorDetailViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
 //    MARK: UI elements
     
@@ -87,8 +96,7 @@ extension ActorDetailController: UICollectionViewDataSource, UICollectionViewDel
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = MovieDetailController()
-        vc.viewModel.movieId = viewModel.actorMovies[indexPath.item].id
+        let vc = MovieDetailController(viewModel: .init(movieId: viewModel.actorMovies[indexPath.item].id ?? 0))
         navigationController?.pushViewController(vc, animated: true)
     }
 }

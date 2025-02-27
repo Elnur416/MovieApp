@@ -8,14 +8,19 @@
 import Foundation
 
 class CollectionViewModel {
-    let manager = CollectionManager()
+    let useCase: CollectionUseCase
     var data: Collection?
     var collectionID: Int?
     var success: (() -> Void)?
     var errorHandler: ((String) -> Void)?
     
+    init(useCase: CollectionUseCase, collectionID: Int) {
+        self.collectionID = collectionID
+        self.useCase = useCase
+    }
+    
     func getCollectionData() {
-        manager.getCollectionData(collectionID: collectionID ?? 0) { data, error in
+        useCase.getCollectionData(collectionID: collectionID ?? 0) { data, error in
             if let data {
                 self.data = data
                 self.success?()

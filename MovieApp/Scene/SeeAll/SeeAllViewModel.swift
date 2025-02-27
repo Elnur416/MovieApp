@@ -8,33 +8,22 @@
 import Foundation
 
 class SeeAllViewModel {
-    var selectedTitle: String?
-    var movie: Movie?
-    var movieItems = [MovieResult]()
-    private let manager = MovieManager()
+    private var movie: Movie?
+    var model: HomeModel
+    private var usecase: MovieManagerUseCase
     var completion: (() -> Void)?
     var errorHandler: ((String) -> Void)?
     
-    func getMovies() {
-        switch selectedTitle {
-        case "Now Playing":
-            fetchData(endpoint: .nowPlaying)
-            case "Top Rated":
-            fetchData(endpoint: .topRated)
-            case "Upcoming":
-            fetchData(endpoint: .upcoming)
-            case "Popular":
-            fetchData(endpoint: .popular)
-        default:
-            return
-        }
+    init(model: HomeModel, usecase: MovieManagerUseCase) {
+        self.model = model
+        self.usecase = usecase
     }
     
-    func fetchData(endpoint: MovieEndpoint) {
-        manager.getMovieList(page: ((movie?.page ?? 0) + 1), endpoint: endpoint) { data, error in
+    func fetchData() {
+        usecase.getMovieList(page: ((movie?.page ?? 0) + 1), endpoint: model.title.endpoint) { data, error in
             if let data {
                 self.movie = data
-                self.movieItems.append(contentsOf: data.results ?? [])
+                self.model.items.append(contentsOf: data.results ?? [])
                 self.completion?()
             } else if let error {
                 self.errorHandler?(error)
@@ -43,14 +32,14 @@ class SeeAllViewModel {
     }
     
     func pagination(index: Int) {
-        if index == movieItems.count - 2 && movie?.page ?? 0 <= (movie?.totalPages ?? 0) {
-            getMovies()
+        if index == model.items.count - 2 && movie?.page ?? 0 <= (movie?.totalPages ?? 0) {
+            fetchData()
         }
     }
     
     func reset() {
         movie = nil
-        movieItems.removeAll()
+        model.items.removeAll()
     }
 }
 

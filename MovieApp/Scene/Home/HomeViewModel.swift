@@ -7,28 +7,45 @@
 
 import Foundation
 
+enum HomeSectionTitle: String {
+    case popular = "Popular"
+    case upcoming = "Upcoming"
+    case toprated = "Top Rated"
+    case nowplaying = "Now Playing"
+}
+
+struct HomeTitleModel {
+    let type: HomeSectionTitle
+    let endpoint: MovieEndpoint
+}
+
 struct HomeModel {
-    let title: String
-    let items: [MovieResult]
+    let title: HomeTitleModel
+    var items: [MovieResult]
 }
 
 class HomeViewModel {
     var movieItems = [HomeModel]()
-    private let manager = MovieManager()
-    private let genreManager = GenreManager()
+    let useCase: MovieManagerUseCase
+    private let genreUseCase: GenreUseCase
     private var genres = [GenreElement]()
     var completion: (() -> Void)?
     var errorHandler: ((String) -> Void)?
     
-    func getAllData() {
-        fetchData(title: "Now Playing", endpoint: .nowPlaying)
-        fetchData(title: "Popular", endpoint: .popular)
-        fetchData(title: "Top Rated", endpoint: .topRated)
-        fetchData(title: "Upcoming", endpoint: .upcoming)
+    init(useCase: MovieManagerUseCase, genreUseCase: GenreUseCase) {
+        self.useCase = useCase
+        self.genreUseCase = genreUseCase
     }
     
-    private func fetchData(title: String, endpoint: MovieEndpoint) {
-        manager.getMovieList(page: 1, endpoint: endpoint) { data, error in
+    func getAllData() {
+        fetchData(title: .init(type: .nowplaying, endpoint: .nowPlaying))
+        fetchData(title: .init(type: .popular, endpoint: .popular))
+        fetchData(title: .init(type: .toprated, endpoint: .topRated))
+        fetchData(title: .init(type: .upcoming, endpoint: .upcoming))
+    }
+    
+    private func fetchData(title: HomeTitleModel) {
+        useCase.getMovieList(page: 1, endpoint: title.endpoint) { data, error in
             if let data {
                 self.movieItems.append(.init(title: title,
                                              items: data.results ?? []))
@@ -40,7 +57,7 @@ class HomeViewModel {
     }
     
     func getGenres() {
-        genreManager.getGenres { data, error in
+        genreUseCase.getGenres { data, error in
             if let data {
                 self.genres = data.genres ?? []
                 GenreHandler.shared.setItems(data: data.genres ?? [])

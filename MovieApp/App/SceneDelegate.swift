@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         if UserDefaults.standard.string(forKey: "userID") == nil {
-            AuthManager.shared.singOut()
+            AuthManager.shared.signOut()
             authRoot(windowScene: windowScene)
         } else {
             tabRoot(windowScene: windowScene)
