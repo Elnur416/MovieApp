@@ -44,7 +44,7 @@ struct ActorResult: Codable, MovieCellProtocol {
     }
     
     var formattedDate: String {
-        ""
+        birthday ?? ""
     }
     
     var cellTitle: String {

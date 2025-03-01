@@ -13,6 +13,8 @@ class AuthManager {
     
     private init() {}
     
+//    MARK: Enter
+    
     func enter(email: String,
                password: String,
                completion: @escaping(String?) -> Void) {
@@ -26,6 +28,8 @@ class AuthManager {
                    completion: completion)
         }
     }
+    
+//    MARK: - SignUp
     
     private func signUp(email: String,
                     password: String,
@@ -42,6 +46,8 @@ class AuthManager {
         }
     }
     
+//    MARK: - SignIn
+    
     private func signIn(email: String,
                 password: String,
                 completion: @escaping(String?) -> Void) {
@@ -56,6 +62,8 @@ class AuthManager {
             }
         }
     }
+    
+//    MARK: - SignOut
     
     func signOut() {
         do {

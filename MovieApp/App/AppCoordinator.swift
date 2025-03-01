@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import FirebaseAuth
 
-class AppCoordinator: Coordinator {
+final class AppCoordinator: Coordinator {
     var navigationController: UINavigationController
     var window: UIWindow?
     

@@ -16,6 +16,7 @@ class MovieHeaderView: UICollectionReusableView {
     private var videoKey: String?
     var segmentCallback: ((Int) -> Void)?
     var videoCallback: (() -> Void)?
+    var overviewCallback: ((String) -> Void)?
     
 //    MARK: - Setup UI elements
     
@@ -38,7 +39,7 @@ class MovieHeaderView: UICollectionReusableView {
     }()
     
     private lazy var playImage: UIImageView = {
-        let iv = UIImageView(image: UIImage(systemName: "play"))
+        let iv = UIImageView(image: UIImage(systemName: "play.circle.fill"))
         iv.contentMode = .scaleAspectFit
         iv.tintColor = UIColor(named: "starColour")
         iv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(watchTrailer)))
@@ -168,10 +169,20 @@ class MovieHeaderView: UICollectionReusableView {
         return l
     }()
     
+    private lazy var aboutView: UIView = {
+        let v = UIView()
+        v.backgroundColor = .systemGray5
+        v.layer.cornerRadius = 8
+        v.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showOverview)))
+        v.isUserInteractionEnabled = true
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
     private lazy var overview: UILabel = {
         let l = UILabel()
         l.font = .systemFont(ofSize: 14, weight: .regular)
-        l.numberOfLines = 6
+        l.numberOfLines = 5
         l.textAlignment = .left
         l.translatesAutoresizingMaskIntoConstraints = false
         return l
@@ -180,6 +191,7 @@ class MovieHeaderView: UICollectionReusableView {
     private lazy var segmentControl: UISegmentedControl = {
         let view = UISegmentedControl(items: self.items)
         view.selectedSegmentIndex = 0
+        view.selectedSegmentTintColor = .systemGray5
         view.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -207,7 +219,7 @@ class MovieHeaderView: UICollectionReusableView {
          stack,
          genreCollection,
          aboutMovie,
-         overview,
+         aboutView,
          segmentControl].forEach(addSubview)
         
         [dateImage,
@@ -218,6 +230,8 @@ class MovieHeaderView: UICollectionReusableView {
         
         [timeImage,
          runtime].forEach { timeView.addSubview($0) }
+        
+        aboutView.addSubview(overview)
     }
     
     private func setupConstraints() {
@@ -278,9 +292,14 @@ class MovieHeaderView: UICollectionReusableView {
             aboutMovie.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
             aboutMovie.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -28),
             
-            overview.topAnchor.constraint(equalTo: aboutMovie.bottomAnchor, constant: 8),
-            overview.leadingAnchor.constraint(equalTo: aboutMovie.leadingAnchor),
-            overview.trailingAnchor.constraint(equalTo: aboutMovie.trailingAnchor),
+            aboutView.topAnchor.constraint(equalTo: aboutMovie.bottomAnchor, constant: 8),
+            aboutView.leadingAnchor.constraint(equalTo: aboutMovie.leadingAnchor),
+            aboutView.trailingAnchor.constraint(equalTo: aboutMovie.trailingAnchor),
+            
+            overview.topAnchor.constraint(equalTo: aboutView.topAnchor, constant: 8),
+            overview.leadingAnchor.constraint(equalTo: aboutView.leadingAnchor, constant: 8),
+            overview.trailingAnchor.constraint(equalTo: aboutView.trailingAnchor, constant: -8),
+            overview.bottomAnchor.constraint(equalTo: aboutView.bottomAnchor, constant: -8),
             
             segmentControl.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24),
             segmentControl.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
@@ -297,6 +316,10 @@ class MovieHeaderView: UICollectionReusableView {
         default:
             return
         }
+    }
+    
+    @objc private func showOverview() {
+        overviewCallback?(overview.text ?? "")
     }
     
 //    MARK: - Configure

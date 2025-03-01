@@ -20,7 +20,7 @@ class MovieDetailController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    MARK: Setup UI elements
+    //    MARK: Setup UI elements
     
     private lazy var collection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -36,13 +36,18 @@ class MovieDetailController: UIViewController {
         return c
     }()
     
-//    MARK: - Life cycle
+    //    MARK: - Life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupUI()
         configureViewModel()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        viewModel.getMoviesFromWishlist()
+        updateWishlistButton()
     }
     
     private func setupUI() {
@@ -50,16 +55,20 @@ class MovieDetailController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = false
         view.addSubview(collection)
         collection.frame = view.bounds
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "bookmark"), style: .plain, target: self, action: #selector(addWishlist))
+        updateWishlistButton()
     }
     
     private func configureViewModel() {
         viewModel.getMovieDetail()
         viewModel.getSimilarMovies()
         viewModel.getVideos()
+        viewModel.getMoviesFromWishlist()
+        
         viewModel.success = { [weak self] in
             self?.collection.reloadData()
+            self?.updateWishlistButton()
         }
+        
         viewModel.errorHandler = { [weak self] error in
             let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
@@ -67,18 +76,30 @@ class MovieDetailController: UIViewController {
         }
     }
     
+    private func updateWishlistButton() {
+        let isInWishlist = viewModel.wishlist.contains { $0.id == viewModel.data?.id }
+        let imageName = isInWishlist ? "bookmark.fill" : "bookmark"
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: imageName), style: .plain, target: self, action: #selector(addWishlist)
+        )
+    }
+    
     @objc private func addWishlist() {
+        guard let movie = viewModel.data else { return }
         guard let button = navigationItem.rightBarButtonItem else { return }
         
-        let isFilled = button.image == UIImage(systemName: "bookmark.fill")
-        button.image = UIImage(systemName: isFilled ? "bookmark" : "bookmark.fill")
-        
-        guard let movie = viewModel.data, !isFilled else { return }
-        
-        FirestoreManager.shared.saveMovie(model: movie) { error in
-            if let error {
-                self.showAlert(message: error)
+        if viewModel.wishlist.contains(where: { $0.id == movie.id }) {
+            FirestoreManager.shared.deleteDocument(movieID: viewModel.movieId ?? 0)
+            button.image = UIImage(systemName: "bookmark")
+        } else {
+            FirestoreManager.shared.saveMovie(model: movie) { [weak self] error in
+                if let error {
+                    self?.showAlert(message: error)
+                } else {
+                    self?.viewModel.getMoviesFromWishlist()
+                }
             }
+            button.image = UIImage(systemName: "bookmark.fill")
         }
     }
 }
@@ -130,6 +151,11 @@ extension MovieDetailController: UICollectionViewDataSource, UICollectionViewDel
             }
             vc.videoKey = key
             self.navigationController?.show(vc, sender: nil)
+        }
+        header.overviewCallback = { [weak self] text in
+            let alert = UIAlertController(title: "", message: text, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Close", style: .default))
+            self?.present(alert, animated: true)
         }
         return header
     }

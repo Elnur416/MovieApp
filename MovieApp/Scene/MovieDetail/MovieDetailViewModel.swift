@@ -11,6 +11,7 @@ class MovieDetailViewModel {
     var data: MovieDetail?
     var similarMovies = [MovieResult]()
     var video = [VideoResult]()
+    var wishlist = [FirestoreModel]()
     var collection: BelongsToCollection?
     var segmentIndex: Int? = 0
     var movieId: Int?
@@ -54,6 +55,17 @@ class MovieDetailViewModel {
                 self.success?()
             } else if let error {
                 self.errorHandler?(error)
+            }
+        }
+    }
+    
+    func getMoviesFromWishlist() {
+        FirestoreManager.shared.getDocument { data, error in
+            if let error {
+                self.errorHandler?(error)
+            } else if let data {
+                self.wishlist = data
+                self.success?()
             }
         }
     }

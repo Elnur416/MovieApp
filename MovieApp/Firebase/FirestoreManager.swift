@@ -15,6 +15,8 @@ class FirestoreManager {
     
     private init() {}
     
+//    MARK: Save
+    
     func saveMovie(model: MovieDetail, completion: @escaping((String?) -> Void)) {
         let genresArray = model.genres?.compactMap { $0.id } ?? []
         let data: [String: Any] = ["id": model.id ?? 0,
@@ -33,6 +35,8 @@ class FirestoreManager {
             }
         }
     }
+    
+//    MARK: - GetDocument
     
     func getDocument(completion: @escaping(([FirestoreModel]?, String?) -> Void)) {
         guard let collection = UserDefaults.standard.value(forKey: "userID") as? String else { return }
@@ -55,6 +59,8 @@ class FirestoreManager {
             }
         })
     }
+    
+//    MARK: - Delete
     
     func deleteDocument(movieID: Int) {
         guard let collection = UserDefaults.standard.value(forKey: "userID") as? String else { return }
