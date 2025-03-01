@@ -20,7 +20,7 @@ class SeeAllViewModel {
     }
     
     func fetchData() {
-        usecase.getMovieList(page: ((movie?.page ?? 0) + 1), endpoint: model.title.endpoint) { data, error in
+        usecase.getMovieList(page: ((movie?.page ?? 1) + 1), endpoint: model.title.endpoint) { data, error in
             if let data {
                 self.movie = data
                 self.model.items.append(contentsOf: data.results ?? [])

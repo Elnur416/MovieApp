@@ -62,6 +62,11 @@ class WishListController: UIViewController {
         self.viewModel.reset()
         self.viewModel.getData()
     }
+    
+    private func showMovieDetail(id: Int) {
+        let coordinator = MovieDetailCoordinator(navigationController: navigationController ?? UINavigationController(),id: id)
+        coordinator.start()
+    }
 }
 
 //MARK: - Setup TableView
@@ -87,5 +92,10 @@ extension WishListController: UITableViewDataSource, UITableViewDelegate {
             viewModel.movies.remove(at: indexPath.item)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let id = viewModel.movies[indexPath.item].id else { return }
+        showMovieDetail(id: id)
     }
 }

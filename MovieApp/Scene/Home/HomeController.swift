@@ -64,6 +64,11 @@ class HomeController: UIViewController {
             self?.present(alert, animated: true)
         }
     }
+    
+    private func showMovieDetail(id: Int) {
+        let coordinator = MovieDetailCoordinator(navigationController: navigationController ?? UINavigationController(),id: id)
+        coordinator.start()
+    }
 }
 
 //MARK: - Setup collection
@@ -82,9 +87,8 @@ extension HomeController: UICollectionViewDataSource, UICollectionViewDelegate, 
                                                        usecase: self.viewModel.useCase))
             self.navigationController?.show(vc, sender: nil)
         }
-        cell.movieCallback = { id in
-            let vc = MovieDetailController(viewModel: .init(movieId: id))
-            self.navigationController?.show(vc, sender: nil)
+        cell.movieCallback = { [weak self] id in
+            self?.showMovieDetail(id: id)
         }
         return cell
     }

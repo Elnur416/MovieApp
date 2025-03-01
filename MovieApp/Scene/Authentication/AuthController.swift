@@ -88,7 +88,8 @@ class AuthController: UIViewController {
         viewModel.success = {
             guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
             guard let sceneDelegate = windowScene.delegate as? SceneDelegate else { return }
-            sceneDelegate.tabRoot(windowScene: windowScene)
+            let coordinator = AppCoordinator(navigationController: self.navigationController ?? UINavigationController(), window: sceneDelegate.window)
+            coordinator.start()
         }
     }
 }

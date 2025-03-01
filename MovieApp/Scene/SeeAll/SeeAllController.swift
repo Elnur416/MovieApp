@@ -78,6 +78,11 @@ class SeeAllController: UIViewController {
         self.viewModel.reset()
         self.viewModel.fetchData()
     }
+    
+    private func showMovieDetail(id: Int) {
+        let coordinator = MovieDetailCoordinator(navigationController: navigationController ?? UINavigationController(),id: id)
+        coordinator.start()
+    }
 }
 
 //MARK: - Setup collection
@@ -99,8 +104,8 @@ extension SeeAllController: UICollectionViewDataSource, UICollectionViewDelegate
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = MovieDetailController(viewModel: .init(movieId: viewModel.model.items[indexPath.row].id ?? 0))
-        navigationController?.show(vc, sender: nil)
+        guard let id = viewModel.model.items[indexPath.row].id else { return }
+        showMovieDetail(id: id)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

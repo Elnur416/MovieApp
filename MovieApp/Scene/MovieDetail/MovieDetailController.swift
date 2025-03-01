@@ -144,7 +144,7 @@ extension MovieDetailController: UICollectionViewDataSource, UICollectionViewDel
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if viewModel.segmentIndex == 0 {
-            let vc = MovieDetailController(viewModel: .init(movieId: viewModel.movieId ?? 0))
+            let vc = MovieDetailController(viewModel: .init(movieId: viewModel.similarMovies[indexPath.item].id ?? 0))
             navigationController?.show(vc, sender: nil)
         } else {
             let vc = CollectionController(viewModel: .init(useCase: CollectionManager(), collectionID: viewModel.data?.belongsToCollection?.id ?? 0))

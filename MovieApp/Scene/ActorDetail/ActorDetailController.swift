@@ -64,6 +64,11 @@ class ActorDetailController: UIViewController {
             self?.present(alert, animated: true)
         }
     }
+    
+    private func showMovieDetail(id: Int) {
+        let coordinator = MovieDetailCoordinator(navigationController: navigationController ?? UINavigationController(),id: id)
+        coordinator.start()
+    }
 }
 
 //MARK: Setup collection
@@ -96,7 +101,7 @@ extension ActorDetailController: UICollectionViewDataSource, UICollectionViewDel
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = MovieDetailController(viewModel: .init(movieId: viewModel.actorMovies[indexPath.item].id ?? 0))
-        navigationController?.pushViewController(vc, animated: true)
+        let id = viewModel.actorMovies[indexPath.item].id ?? 0
+        showMovieDetail(id: id)
     }
 }

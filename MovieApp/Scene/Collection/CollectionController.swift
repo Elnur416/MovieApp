@@ -63,6 +63,11 @@ class CollectionController: UIViewController {
             self?.present(alert, animated: true)
         }
     }
+    
+    private func showMovieDetail(id: Int) {
+        let coordinator = MovieDetailCoordinator(navigationController: navigationController ?? UINavigationController(),id: id)
+        coordinator.start()
+    }
 }
 
 //MARK: Setup collection
@@ -97,7 +102,7 @@ extension CollectionController: UICollectionViewDataSource, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = MovieDetailController(viewModel: .init(movieId: viewModel.data?.parts?[indexPath.item].id ?? 0))
-        navigationController?.show(vc, sender: nil)
+        let id = viewModel.data?.parts?[indexPath.item].id ?? 0
+        showMovieDetail(id: id)
     }
 }

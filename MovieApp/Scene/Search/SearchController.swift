@@ -167,6 +167,11 @@ class SearchController: UIViewController {
     @objc private func refreshData() {
         self.searchTextDidChange()
     }
+    
+    private func showMovieDetail(id: Int) {
+        let coordinator = MovieDetailCoordinator(navigationController: navigationController ?? UINavigationController(),id: id)
+        coordinator.start()
+    }
 }
 
 //MARK: - Setup table
@@ -211,8 +216,8 @@ extension SearchController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch segmentControl.selectedSegmentIndex {
         case 0:
-            let vc = MovieDetailController(viewModel: .init(movieId: viewModel.searchedMovies[indexPath.row].id ?? 0))
-            navigationController?.show(vc, sender: nil)
+            let id = viewModel.searchedMovies[indexPath.row].id ?? 0
+            showMovieDetail(id: id)
         case 1:
             let vc = ActorDetailController(viewModel: .init(actorId: viewModel.searchedActors[indexPath.row].id ?? 0, useCase: ActorManager()))
             navigationController?.show(vc, sender: nil)
