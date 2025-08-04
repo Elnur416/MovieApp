@@ -37,7 +37,7 @@ A simple and intuitive iOS Movie App built with Swift and UIKit. It allows users
 
 | Home | Movie Detail | Search | Wishlist | Actors | Actor Detail |
 |------|---------------|--------|----------|--------|---------------|
-| ![Home](https://github.com/Elnur416/MovieApp/blob/a2c7aced12e9359be77cead87aef6ee23e9990d1/Simulator%20Screenshot%20-%20iPhone%2016%20Pro%20-%202025-08-04%20at%2015.21.11.png) | ![Detail](https://github.com/Elnur416/MovieApp/blob/ce54d0a7c0a1b24866284ed3134e7792871a4de3/Simulator%20Screenshot%20-%20iPhone%2016%20Pro%20-%202025-08-04%20at%2015.30.27.png) | ![Search](screenshots/search.png) | ![Wishlist](screenshots/wishlist.png) | ![Actors](screenshots/actors.png) | ![Actor Detail](screenshots/actor_detail.png) |
+| ![Home](https://github.com/Elnur416/MovieApp/blob/a2c7aced12e9359be77cead87aef6ee23e9990d1/Simulator%20Screenshot%20-%20iPhone%2016%20Pro%20-%202025-08-04%20at%2015.21.11.png) | ![Detail](https://github.com/Elnur416/MovieApp/blob/ce54d0a7c0a1b24866284ed3134e7792871a4de3/Simulator%20Screenshot%20-%20iPhone%2016%20Pro%20-%202025-08-04%20at%2015.30.27.png) | ![Search](https://github.com/Elnur416/MovieApp/blob/9f57402ef596d220ab9ae76e5c1e724b48e6e48b/Simulator%20Screenshot%20-%20iPhone%2016%20Pro%20-%202025-08-04%20at%2015.39.23.png) | ![Wishlist](screenshots/wishlist.png) | ![Actors](screenshots/actors.png) | ![Actor Detail](screenshots/actor_detail.png) |
 ## 🛠 Tech Stack
 
 - **Language**: Swift  
