@@ -44,7 +44,6 @@ A simple and intuitive iOS Movie App built with Swift and UIKit. It allows users
 - **UI Framework**: UIKit  
 - **Architecture**: MVVM / Clean Architecture  
 - **Networking**: URLSession  
-- **Persistence**: CoreData / Realm *(specify whichever you used)*  
 - **API**: [TMDb API](https://developer.themoviedb.org/)
 
 ## 🚀 Installation
